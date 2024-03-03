@@ -6,6 +6,7 @@ import Cart from './page/cart.js';
 import EditProfile from './components/editprofile.js';
 import Shopping from './page/shopping.js';
 import BookDetail from './page/bookdetail.js';
+import Order from './page/order.js';
 import BasicLayout from './components/layout.js';
 import Reservation from './components/reservation.js';
 import {BrowserRouter as Router, Switch, Route, Routes, Outlet} from 'react-router-dom';
@@ -23,9 +24,11 @@ const App = () => {
           }
         >
           <Route path="login" element={<Login />} />
-          <Route path="shopping" element={<Shopping />} />
+          <Route index element={<Shopping />} />
           <Route path="cart" element={<Cart />} />
           <Route path="bookdetail/:id" element={<BookDetail />} />
+          <Route path="order" element={<Order />} />
+          {/* SE3330 */}
           <Route path="editprofile" element={<EditProfile />} />
           <Route path="reservation" element={<Reservation />} />
         </Route>

@@ -1,49 +1,35 @@
 import React from 'react';
-import {Space, Table, Tag} from 'antd';
+import {Space, Table, Tag, InputNumber, Button} from 'antd';
+
+function onChange(value) {
+  console.log('changed', value);
+}
+
 const columns = [
   {
-    title: 'Name',
+    title: '书名',
     dataIndex: 'name',
     key: 'name',
     render: (text) => <a>{text}</a>
   },
   {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age'
+    title: '价格',
+    dataIndex: 'price',
+    key: 'price'
   },
   {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address'
+    title: '数量',
+    key: 'number',
+    dataIndex: 'number',
+    render: () => <InputNumber min={1} max={10} defaultValue={3} onChange={onChange} />
   },
   {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: (_, {tags}) => (
-      <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? 'geekblue' : 'green';
-          if (tag === 'loser') {
-            color = 'volcano';
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    )
-  },
-  {
-    title: 'Action',
+    title: '操作',
     key: 'action',
     render: (_, record) => (
       <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
+        <a>购买</a>
+        <a>删除</a>
       </Space>
     )
   }
@@ -53,34 +39,25 @@ const data = [
     key: '1',
     name: 'John Brown',
     age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer']
+    address: 'New York No. 1 Lake Park'
   },
   {
     key: '2',
     name: 'Jim Green',
     age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser']
+    address: 'London No. 1 Lake Park'
   },
   {
     key: '3',
     name: 'Joe Black',
     age: 32,
-    address: 'Sydney No. 1 Lake Park',
-    tags: ['cool', 'teacher']
+    address: 'Sydney No. 1 Lake Park'
   }
 ];
 const Cart = () => (
-  <Table
-    columns={columns}
-    dataSource={data}
-    style={{
-      width: '100%',
-      padding: '20px',
-      alignSelf: 'flex-start',
-      height: '100%'
-    }}
-  />
+  <div className="w-full p-[20px] self-start h-full">
+    <Table columns={columns} dataSource={data} />
+    <Button className="mt-4 bg-green-500 text-white rounded-lg">全部购买</Button>
+  </div>
 );
 export default Cart;

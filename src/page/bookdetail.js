@@ -1,14 +1,25 @@
-import staticBooks from '../assets/staticdata';
-import {useParams} from 'react-router-dom';
-import React from 'react';
-import {Image, Divider, Card, Button, Input} from 'antd';
+import fakeComment from "../assets/fakecomment";
+import staticBooks from "../assets/staticdata";
+import {useParams} from "react-router-dom";
+import React from "react";
+import {useState} from "react";
+import Comment from "../components/comment";
+import {Image, Divider, Card, Button, Input} from "antd";
 const {TextArea} = Input;
 
+const commentCard = (comments) => {
+  return comments.map((comment) => {
+    return <Comment comment={comment} />;
+  });
+};
+
 const BookDetail = () => {
+  const [comments, setComments] = useState(fakeComment);
+  const [content, setContent] = useState("");
   const {id} = useParams();
   const data = staticBooks.find((book) => book.id === id);
   return (
-    <div className="flex-column items-center w-11/12">
+    <div className="flex-column items-center w-11/12 pt-12">
       <div className="flex flex-row justify-start w-full pl-10 pr-10">
         <Image width="350px" src={process.env.PUBLIC_URL + `/img/${data.path}`} className="w-96" />
         <div className="flex-column justify-start align-start w-7/12 ml-20">
@@ -33,7 +44,32 @@ const BookDetail = () => {
           </div>
         </div>
       </div>
-      <TextArea rows={4} placeholder="这是一条友善的评论" className="mt-5 rounded-md" />
+      <TextArea
+        rows={4}
+        placeholder="这是一条友善的评论"
+        className="mt-5 rounded-md mb-[15px]"
+        onInput={(e) => {
+          setContent(e.target.value);
+        }}
+        value={content}
+      />
+      <Button
+        className=" bg-green-500 text-white rounded-[8px] mb-[10px]"
+        onClick={() => {
+          setComments([
+            ...comments,
+            {
+              uname: "Xiaoyun",
+              text: content,
+              avatar: "https://avatars.githubusercontent.com/u/114564389?v=4"
+            }
+          ]);
+          setContent("");
+        }}
+      >
+        发布评论
+      </Button>
+      {commentCard(comments)}
     </div>
   );
 };

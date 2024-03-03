@@ -1,13 +1,13 @@
 import React from 'react';
 import {ConfigProvider, Layout, Menu, theme} from 'antd';
 import {UserOutlined} from '@ant-design/icons';
-import {Link} from 'react-router-dom';
+import {Link, Outlet} from 'react-router-dom';
 import User from './user';
 const {Header, Content, Footer} = Layout;
 const items = [
   {
     key: 'shopping',
-    label: <Link to="/shopping">商城</Link>
+    label: <Link to="/">商城</Link>
   },
   {
     key: 'cart',
@@ -18,7 +18,7 @@ const items = [
     label: <Link to="/order">订单</Link>
   }
 ];
-export default function BasicLayout({children}) {
+export default function BasicLayout() {
   const {
     token: {colorBgContainer, borderRadius, colorPrimary}
   } = theme.useToken();
@@ -59,8 +59,6 @@ export default function BasicLayout({children}) {
         </Header>
         <Content
           style={{
-            padding: '12px 10px',
-            paddingTop: '30px',
             minHeight: '500px',
             display: 'flex',
             alignItems: 'center',
@@ -68,7 +66,7 @@ export default function BasicLayout({children}) {
             backgroundColor: '#f6ffed'
           }}
         >
-          {children}
+          <Outlet />
         </Content>
         <Footer
           style={{
