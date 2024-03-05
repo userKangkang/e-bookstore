@@ -1,20 +1,19 @@
 import React from 'react';
-import {ConfigProvider, Layout, Menu, theme} from 'antd';
-import {UserOutlined} from '@ant-design/icons';
+import {ConfigProvider, Layout, Menu, theme} from "antd";
 import {Link, Outlet} from 'react-router-dom';
 import User from './user';
 const {Header, Content, Footer} = Layout;
 const items = [
   {
-    key: 'shopping',
-    label: <Link to="/">商城</Link>
+    key: "shopping",
+    label: <Link to="/book">商城</Link>
   },
   {
-    key: 'cart',
+    key: "cart",
     label: <Link to="/cart">购物车</Link>
   },
   {
-    key: 'order',
+    key: "order",
     label: <Link to="/order">订单</Link>
   }
 ];

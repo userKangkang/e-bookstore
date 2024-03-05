@@ -3,8 +3,10 @@ import staticBooks from "../assets/staticdata";
 import {useParams} from "react-router-dom";
 import React from "react";
 import {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
 import Comment from "../components/comment";
 import {Image, Divider, Card, Button, Input} from "antd";
+import {addCart} from "../store/modules/cartStore";
 const {TextArea} = Input;
 
 const commentCard = (comments) => {
@@ -14,6 +16,7 @@ const commentCard = (comments) => {
 };
 
 const BookDetail = () => {
+  const dispatch = useDispatch();
   const [comments, setComments] = useState(fakeComment);
   const [content, setContent] = useState("");
   const {id} = useParams();
@@ -40,7 +43,14 @@ const BookDetail = () => {
           </Card>
           <div className="flex-row justify-start w-9/10 pl-5">
             <Button className="mr-5 bg-orange-500 text-white rounded-md mt-5 w-24">立即购买</Button>
-            <Button className="mr-5 bg-orange-100 text-black rounded-md mt-5 w-28">加入购物车</Button>
+            <Button
+              className="mr-5 bg-orange-100 text-black rounded-md mt-5 w-28"
+              onClick={() => {
+                dispatch(addCart({id: data.id, name: data.name, price: data.price, number: 1}));
+              }}
+            >
+              加入购物车
+            </Button>
           </div>
         </div>
       </div>

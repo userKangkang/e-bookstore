@@ -5,13 +5,13 @@ import {Link} from 'react-router-dom';
 
 const items = [
   {
-    label: 'userKangkang',
-    key: 'username',
+    label: "userKangkang",
+    key: "username",
     icon: <UserOutlined />
   },
   {
     label: `账户余额：${1000}`,
-    key: 'balance',
+    key: "balance",
     icon: (
       <Tooltip title="账户余额">
         <span>￥</span>
@@ -19,8 +19,8 @@ const items = [
     )
   },
   {
-    label: <Link to="/login">退出登录</Link>,
-    key: 'logout',
+    label: <Link to="/">退出登录</Link>,
+    key: "logout",
     danger: true,
     icon: <DownOutlined />
   }

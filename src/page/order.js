@@ -1,4 +1,5 @@
-import {useSelector} from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
+import {increment, decrement, add} from "../store/modules/counterStore";
 import React from "react";
 import {Space, Table, Tag, InputNumber, Button} from "antd";
 
@@ -60,10 +61,17 @@ const data = [
 ];
 const Order = () => {
   const {count} = useSelector((state) => state.counter);
+  const dispatch = useDispatch();
   return (
     <div className="w-full p-[20px] self-start h-full">
       <Table columns={columns} dataSource={data} />
       {count}
+      <button onClick={() => dispatch(increment())} className=" border-[1px]">
+        +1
+      </button>
+      <button onClick={() => dispatch(add(20))} className=" border-[1px]">
+        +20
+      </button>
     </div>
   );
 };

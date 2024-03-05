@@ -6,7 +6,9 @@ import Shopping from "../page/shopping";
 import BookDetail from "../page/bookdetail";
 import Reservation from "../components/reservation";
 import Order from "../page/order";
+import BookLayout from "../components/booklayout";
 import NotFound from "../page/notfound";
+import Home from "../page/home";
 import {createBrowserRouter} from "react-router-dom";
 import {Provider} from "react-redux";
 import store from "../store";
@@ -20,8 +22,15 @@ const router = createBrowserRouter([
       </Provider>
     ),
     children: [
-      {path: "login", element: <Login />},
-      {index: true, element: <Shopping />},
+      {index: true, element: <Login />},
+      {
+        path: "book",
+        element: <BookLayout />,
+        children: [
+          {index: true, element: <Home />},
+          {path: "shopping", element: <Shopping />}
+        ]
+      },
       {path: "cart", element: <Cart />},
       {path: "bookdetail/:id", element: <BookDetail />},
       {path: "order", element: <Order />},
