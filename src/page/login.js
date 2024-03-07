@@ -13,7 +13,7 @@ export default function Login({children}) {
   const navigate = useNavigate();
   return (
     <div className=" flex flex-row justify-end h-[500px] w-full bg-login-pattern pl-20 pr-20">
-      <img src={process.env.PUBLIC_URL + "/img/bggif.gif"} className=" z-0 absolute top-0 left-0 h-[620px] w-screen" />
+      <img src={process.env.PUBLIC_URL + "/img/bggif4.gif"} className=" z-0 absolute top-0 left-0 h-[620px] w-full" />
       <Flex vertical className=" flex flex-col border-2 pt-12 mt-auto mb-auto items-center w-96 h-[350px] rounded-lg bg-[rgba(255,255,255,0.6)] z-10">
         <h2 className=" mb-6 text-4xl text-green-600">e-BookStore</h2>
         <Form

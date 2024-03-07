@@ -1,8 +1,12 @@
 import React from 'react';
 import { Card } from 'antd';
-const { Meta } = Card;
+import styles from "../css/card.module.css";
+
+console.log(styles);
+
+const {Meta} = Card;
 const Book = (props) => (
-  <Card hoverable className="w-50 h-76" cover={<img alt="example" src={process.env.PUBLIC_URL + props.path} className="w-full h-52" />}>
+  <Card hoverable cover={<img alt="example" src={process.env.PUBLIC_URL + props.path} className={styles.img} />}>
     <Meta title={props.name} description={`售价:${props.price}元`} />
   </Card>
 );

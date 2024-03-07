@@ -7,5 +7,8 @@ module.exports = {
       "login-pattern": "url('./assets/bgimg.png')"
     }
   },
-  plugins: []
+  plugins: [],
+  corePlugins: {
+    preflight: false
+  }
 };

@@ -9,6 +9,7 @@ import Order from "../page/order";
 import BookLayout from "../components/booklayout";
 import NotFound from "../page/notfound";
 import Home from "../page/home";
+import Signup from "../page/signup";
 import {createBrowserRouter} from "react-router-dom";
 import {Provider} from "react-redux";
 import store from "../store";
@@ -35,7 +36,8 @@ const router = createBrowserRouter([
       {path: "bookdetail/:id", element: <BookDetail />},
       {path: "order", element: <Order />},
       {path: "editprofile", element: <EditProfile />},
-      {path: "reservation", element: <Reservation />}
+      {path: "reservation", element: <Reservation />},
+      {path: "signup", element: <Signup />}
     ]
   },
   {

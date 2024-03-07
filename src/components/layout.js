@@ -15,6 +15,10 @@ const items = [
   {
     key: "order",
     label: <Link to="/order">订单</Link>
+  },
+  {
+    key: "signup",
+    label: <Link to="/signup">注册</Link>
   }
 ];
 export default function BasicLayout() {
