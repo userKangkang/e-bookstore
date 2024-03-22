@@ -1,17 +1,18 @@
 import BasicLayout from "../components/layout";
 import Login from "../page/login";
 import Cart from "../page/cart";
-import EditProfile from "../components/editprofile";
 import Shopping from "../page/shopping";
 import BookDetail from "../page/bookdetail";
-import Reservation from "../components/reservation";
 import Order from "../page/order";
 import BookLayout from "../components/booklayout";
 import NotFound from "../page/notfound";
 import Home from "../page/home";
+import ManageUser from "../page/manageuser";
+import ManageBook from "../page/managebook";
 import Signup from "../page/signup";
 import {createBrowserRouter} from "react-router-dom";
 import {Provider} from "react-redux";
+import ManagerLayout from "../components/managerlayout";
 import store from "../store";
 
 const router = createBrowserRouter([
@@ -35,9 +36,15 @@ const router = createBrowserRouter([
       {path: "cart", element: <Cart />},
       {path: "bookdetail/:id", element: <BookDetail />},
       {path: "order", element: <Order />},
-      {path: "editprofile", element: <EditProfile />},
-      {path: "reservation", element: <Reservation />},
-      {path: "signup", element: <Signup />}
+      {path: "signup", element: <Signup />},
+      {
+        path: "manager",
+        element: <ManagerLayout />,
+        children: [
+          {index: true, element: <ManageUser />},
+          {path: "books", element: <ManageBook />}
+        ]
+      }
     ]
   },
   {

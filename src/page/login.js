@@ -1,15 +1,14 @@
 import React from "react";
-import {Flex, Radio, Button, Checkbox, Form, Input} from "antd";
+import {Flex, Button, Checkbox, Form, Input, message} from "antd";
 import {useNavigate} from "react-router-dom";
-
-const onFinish = (values) => {
-  console.log("Success:", values);
-};
-const onFinishFailed = (errorInfo) => {
-  console.log("Failed:", errorInfo);
-};
+import {useDispatch, useSelector} from "react-redux";
+import {setIslogin, setPassword, setUsername} from "../store/modules/loginStore";
+import {getLogin} from "../api/getlogin";
+import {getMe} from "../api/getMe";
 
 export default function Login({children}) {
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
   return (
     <div className=" flex flex-row justify-end h-[500px] w-full bg-login-pattern pl-20 pr-20">
@@ -29,8 +28,27 @@ export default function Login({children}) {
           initialValues={{
             remember: true
           }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
+          onFinish={(values) => {
+            getLogin(values.username, values.password)
+              .then((res) => {
+                if (res.ok) {
+                  message.success("登录成功");
+                  dispatch(setIslogin(true));
+                  dispatch(setUsername(values.username));
+                  dispatch(setPassword(values.password));
+                  navigate("/book");
+                } else {
+                  message.error("登录失败");
+                }
+              })
+              .catch((e) => {
+                message.error("网络错误");
+              });
+          }}
+          onFinishFailed={() => {
+            alert("onFinishFailed");
+            dispatch(setIslogin(false));
+          }}
           autoComplete="off"
         >
           <Form.Item
@@ -78,13 +96,7 @@ export default function Login({children}) {
             }}
             className=" w-full"
           >
-            <Button
-              className=" bg-green-600 text-white "
-              htmlType="submit"
-              onClick={() => {
-                navigate("/book");
-              }}
-            >
+            <Button className=" bg-green-600 text-white " htmlType="submit" onClick={() => {}}>
               Submit
             </Button>
           </Form.Item>

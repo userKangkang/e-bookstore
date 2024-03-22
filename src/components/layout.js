@@ -2,6 +2,7 @@ import React from 'react';
 import {ConfigProvider, Layout, Menu, theme} from "antd";
 import {Link, Outlet} from 'react-router-dom';
 import User from './user';
+
 const {Header, Content, Footer} = Layout;
 const items = [
   {
@@ -19,6 +20,10 @@ const items = [
   {
     key: "signup",
     label: <Link to="/signup">注册</Link>
+  },
+  {
+    key: "manager",
+    label: <Link to="/manager">管理员专区</Link>
   }
 ];
 export default function BasicLayout() {
@@ -29,9 +34,9 @@ export default function BasicLayout() {
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: '#00b96b',
+          colorPrimary: "#00b96b",
           borderRadius: 2,
-          colorBgContainer: '#f6ffed'
+          colorBgContainer: "#f6ffed"
         }
       }}
     >
@@ -39,10 +44,10 @@ export default function BasicLayout() {
         <Header
           style={{
             background: colorBgContainer,
-            position: 'sticky',
+            position: "sticky",
             top: 0,
-            display: 'flex',
-            alignItems: 'center',
+            display: "flex",
+            alignItems: "center",
             zIndex: 1
           }}
         >
@@ -50,7 +55,7 @@ export default function BasicLayout() {
           <div className="green">e-BookStore</div>
           <Menu
             mode="horizontal"
-            defaultSelectedKeys={['1']}
+            defaultSelectedKeys={["shopping"]}
             items={items}
             style={{
               background: colorBgContainer,
@@ -62,18 +67,18 @@ export default function BasicLayout() {
         </Header>
         <Content
           style={{
-            minHeight: '500px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: '#f6ffed'
+            minHeight: "500px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "#f6ffed"
           }}
         >
           <Outlet />
         </Content>
         <Footer
           style={{
-            textAlign: 'center'
+            textAlign: "center"
           }}
         >
           e-Bookstore ©{new Date().getFullYear()} Created by userKangkang@github

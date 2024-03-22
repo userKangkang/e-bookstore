@@ -5,11 +5,25 @@ import Book from "../components/book";
 import {Input, Pagination, Menu} from "antd";
 import {Link, useNavigate, useSearchParams} from "react-router-dom";
 import staticBooks from "../assets/staticdata";
-import {useState} from "react";
+import {useState, useEffect} from "react";
+import {getMe} from "../api/getMe";
+import {useSelector, useDispatch} from "react-redux";
+import {setUsername, setBalance} from "../store/modules/loginStore";
 const {Search} = Input;
 
 const Home = () => {
   // 编程导航
+  const dispatch = useDispatch();
+  useEffect(() => {
+    getMe().then((res) => {
+      if (!res.id) {
+        navigate("/");
+      } else {
+        dispatch(setUsername(res.nickname));
+        dispatch(setBalance(res.balance));
+      }
+    });
+  });
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const bookname = params.get("search");
@@ -29,7 +43,7 @@ const Home = () => {
         {searchedBooks.slice(index, index < 6 ? 4 + index : 6).map((book) => {
           return (
             <Col className="gutter-row" onClick={() => navigate(`/bookdetail/${book.id}`)} span={6}>
-              <Book path={`/img/${book.path}`} name={book.name} price={book.price} />
+              <Book path={`/img/${book.path}`} name={book.name} price={book.price} author={book.author} stock={book.stock} />
             </Col>
           );
         })}

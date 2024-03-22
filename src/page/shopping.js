@@ -23,7 +23,7 @@ const Shopping = () => {
   const Books = searchedBooks.map((book) => {
     return (
       <Col className="gutter-row" onClick={() => navigate(`/bookdetail/${book.id}`)} span={6}>
-        <Book path={`/img/${book.path}`} name={book.name} price={book.price} />
+        <Book path={`/img/${book.path}`} name={book.name} price={book.price} author={book.author} stock={book.stock} />
       </Col>
     );
   });

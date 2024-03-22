@@ -2,13 +2,11 @@ import React from 'react';
 import { ConfigProvider, Layout, Menu, theme } from 'antd';
 import './App.css';
 import Login from "./page/login.js";
-import Cart from './page/cart.js';
-import EditProfile from './components/editprofile.js';
-import Shopping from './page/shopping.js';
-import BookDetail from './page/bookdetail.js';
-import Order from './page/order.js';
-import BasicLayout from './components/layout.js';
-import Reservation from './components/reservation.js';
+import Cart from "./page/cart.js";
+import Shopping from "./page/shopping.js";
+import BookDetail from "./page/bookdetail.js";
+import Order from "./page/order.js";
+import BasicLayout from "./components/layout.js";
 import {BrowserRouter as Router, Switch, Route, Routes, Outlet} from 'react-router-dom';
 
 const App = () => {
@@ -29,8 +27,6 @@ const App = () => {
           <Route path="bookdetail/:id" element={<BookDetail />} />
           <Route path="order" element={<Order />} />
           {/* SE3330 */}
-          <Route path="editprofile" element={<EditProfile />} />
-          <Route path="reservation" element={<Reservation />} />
         </Route>
       </Routes>
     </Router>

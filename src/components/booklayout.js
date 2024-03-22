@@ -1,6 +1,6 @@
 import React from "react";
 
-import {AppstoreOutlined, MailOutlined} from "@ant-design/icons";
+import {BookOutlined, HomeOutlined} from "@ant-design/icons";
 
 import {Menu} from "antd";
 import {Link, Outlet, useSearchParams} from "react-router-dom";
@@ -11,12 +11,12 @@ const items = [
   {
     label: <Link to="/book">首页</Link>,
     key: "/",
-    icon: <MailOutlined />
+    icon: <HomeOutlined />
   },
   {
     label: <Link to="/book/shopping">书库</Link>,
     key: "shopping",
-    icon: <AppstoreOutlined />
+    icon: <BookOutlined />
   }
 ];
 const BookLayout = () => {

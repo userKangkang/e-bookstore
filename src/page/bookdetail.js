@@ -20,6 +20,7 @@ const BookDetail = () => {
   const [comments, setComments] = useState(fakeComment);
   const [content, setContent] = useState("");
   const {id} = useParams();
+  const user = useSelector((state) => state.login.username);
   const data = staticBooks.find((book) => book.id === id);
   return (
     <div className="flex-column items-center w-11/12 pt-12">
@@ -69,7 +70,7 @@ const BookDetail = () => {
           setComments([
             ...comments,
             {
-              uname: "Xiaoyun",
+              uname: user || "匿名用户",
               text: content,
               avatar: "https://avatars.githubusercontent.com/u/114564389?v=4"
             }
