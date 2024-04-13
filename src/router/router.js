@@ -10,6 +10,7 @@ import Home from "../page/home";
 import ManageUser from "../page/manageuser";
 import ManageBook from "../page/managebook";
 import Signup from "../page/signup";
+import Profile from "../page/profile";
 import {createBrowserRouter} from "react-router-dom";
 import {Provider} from "react-redux";
 import ManagerLayout from "../components/managerlayout";
@@ -44,7 +45,8 @@ const router = createBrowserRouter([
           {index: true, element: <ManageUser />},
           {path: "books", element: <ManageBook />}
         ]
-      }
+      },
+      {path: "profile", element: <Profile />}
     ]
   },
   {

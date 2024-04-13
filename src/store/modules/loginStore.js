@@ -1,4 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
+import { set } from "lodash";
 
 const loginStore = createSlice({
   name: "login",
@@ -6,7 +7,11 @@ const loginStore = createSlice({
     username: "",
     password: "",
     islogin: false,
-    balance: null
+    balance: 0,
+    avatar: "",
+    id: null,
+    hobby: "",
+    signature: ""
   },
   reducers: {
     setUsername: (state, action) => {
@@ -21,17 +26,31 @@ const loginStore = createSlice({
     setBalance: (state, action) => {
       state.balance = action.payload;
     },
+    setAvatar: (state, action) => {
+      state.avatar = action.payload;
+    },
+    setId: (state, action) => {
+      state.id = action.payload;
+    },
+    setHobby(state, action) {
+      state.hobby = action.payload;
+    },
+    setSignature(state, action) {
+      state.signature = action.payload;
+    },
     setLogout: (state) => {
       state.islogin = false;
       state.username = "";
       state.password = "";
       state.balance = null;
+      state.avatar = "";
+      state.id = null;
     }
   }
 });
 
-const {setUsername, setPassword, setIslogin, setLogout, setBalance} = loginStore.actions;
+const {setUsername, setPassword, setIslogin, setLogout, setBalance, setAvatar, setId, setHobby, setSignature} = loginStore.actions;
 
-export {setUsername, setPassword, setIslogin, setLogout, setBalance};
+export {setUsername, setPassword, setIslogin, setLogout, setBalance, setAvatar, setId, setHobby, setSignature};
 
 export default loginStore.reducer;

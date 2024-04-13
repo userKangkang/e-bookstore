@@ -2,7 +2,7 @@ import React from "react";
 import {Flex, Button, Checkbox, Form, Input, message} from "antd";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {setIslogin, setPassword, setUsername} from "../store/modules/loginStore";
+import {setId, setIslogin, setPassword, setUsername} from "../store/modules/loginStore";
 import {getLogin} from "../api/getlogin";
 import {getMe} from "../api/getMe";
 
@@ -31,11 +31,12 @@ export default function Login({children}) {
           onFinish={(values) => {
             getLogin(values.username, values.password)
               .then((res) => {
-                if (res.ok) {
+                if (res.code) {
                   message.success("登录成功");
                   dispatch(setIslogin(true));
                   dispatch(setUsername(values.username));
                   dispatch(setPassword(values.password));
+                  localStorage.setItem("username", values.username);
                   navigate("/book");
                 } else {
                   message.error("登录失败");

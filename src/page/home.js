@@ -8,22 +8,28 @@ import staticBooks from "../assets/staticdata";
 import {useState, useEffect} from "react";
 import {getMe} from "../api/getMe";
 import {useSelector, useDispatch} from "react-redux";
-import {setUsername, setBalance} from "../store/modules/loginStore";
+import {setUsername, setBalance, setAvatar, setId, setHobby, setSignature} from "../store/modules/loginStore";
 const {Search} = Input;
 
 const Home = () => {
   // 编程导航
+  const user = localStorage.getItem("username");
+  console.log(user);
   const dispatch = useDispatch();
   useEffect(() => {
-    getMe().then((res) => {
-      if (!res.id) {
+    getMe(user).then((res) => {
+      if (!res.data) {
         navigate("/");
       } else {
-        dispatch(setUsername(res.nickname));
-        dispatch(setBalance(res.balance));
+        dispatch(setUsername(res.data.username));
+        dispatch(setBalance(res.data.balance));
+        dispatch(setAvatar(res.data.avatar));
+        dispatch(setId(res.data.id));
+        dispatch(setHobby(res.data.hobby));
+        dispatch(setSignature(res.data.signature));
       }
     });
-  });
+  }, [user]);
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const bookname = params.get("search");

@@ -1,6 +1,6 @@
 import React from 'react';
 import {DownOutlined, UserOutlined, LogoutOutlined} from "@ant-design/icons";
-import { Button, Dropdown, message, Space, Tooltip } from 'antd';
+import { Avatar, Dropdown, message, Space, Tooltip } from 'antd';
 import {Link} from 'react-router-dom';
 import ModifyPassword from "./modifypassword";
 import {useSelector, useDispatch} from "react-redux";
@@ -11,6 +11,7 @@ const User = () => {
   const user = useSelector((state) => state.login.username);
   const balance = useSelector((state) => state.login.balance);
   const dispatch = useDispatch();
+  const avatar = useSelector((state) => state.login.avatar);
 
   const items = [
     {
@@ -42,6 +43,7 @@ const User = () => {
             dispatch(setLogout());
             message.success("退出登录成功");
             Logout();
+            localStorage.clear();
           }}
         >
           退出登录
@@ -57,9 +59,9 @@ const User = () => {
   return (
     <Space wrap>
       <Dropdown menu={{items}}>
-        <Button>
-          <UserOutlined />
-        </Button>
+      <Avatar size={44} src={avatar} style={{
+        border: "1px solid #606060",
+      }} />
       </Dropdown>
     </Space>
   );

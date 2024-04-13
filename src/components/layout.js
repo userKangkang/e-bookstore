@@ -24,6 +24,10 @@ const items = [
   {
     key: "manager",
     label: <Link to="/manager">管理员专区</Link>
+  },
+  {
+    key: "profile",
+    label: <Link to="/profile">个人中心</Link>
   }
 ];
 export default function BasicLayout() {

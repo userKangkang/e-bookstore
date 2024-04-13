@@ -4,35 +4,20 @@ import {setAmount} from "../store/modules/cartStore";
 import {removeCart} from "../store/modules/cartStore";
 import {Space, Table, Tag, InputNumber, Button} from "antd";
 
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park"
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park"
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sydney No. 1 Lake Park"
-  }
-];
 const Cart = () => {
   const cartList = useSelector((state) => state.cart.cartList);
   const dispatch = useDispatch();
   const columns = [
     {
+      title: "图片",
+      dataIndex: "img",
+      key: "img",
+      render: (img) => <img src={process.env.PUBLIC_URL + `/img/${img}`} className="w-20" />
+    },
+    {
       title: "书名",
       dataIndex: "name",
-      key: "name",
-      render: (text) => <a>{text}</a>
+      key: "name"
     },
     {
       title: "价格",
@@ -75,7 +60,7 @@ const Cart = () => {
     }
   ];
   return (
-    <div className="w-full p-[20px] self-start h-full">
+    <div className="w-[95%] p-[20px] self-start h-full">
       <Table columns={columns} dataSource={cartList} />
       <Button className="mt-4 bg-green-500 text-white rounded-lg">全部购买</Button>
     </div>

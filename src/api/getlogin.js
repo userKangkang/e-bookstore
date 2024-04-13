@@ -1,10 +1,9 @@
 import axios from "axios";
 import {PREFIX} from "./common";
-
-axios.defaults.withCredentials = true;
+import {LOCALURL} from "./common";
 
 export const getLogin = async (username, password) => {
-  const response = await axios.post(`${PREFIX}/login`, {
+  const response = await axios.post(`${LOCALURL}/user/login`, {
     username: username,
     password: password
   });

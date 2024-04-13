@@ -1,8 +1,8 @@
 import axios from "axios";
-import {PREFIX} from "./common";
+import { LOCALURL } from "./common";
 
-export const getMe = async () => {
-  const response = await axios.get(`${PREFIX}/user/me`);
+export const getMe = async (username) => {
+  const response = await axios.post(`${LOCALURL}/user/getme`,{username:username});
 
   console.log(response.data);
 

@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Form, Modal, Input} from "antd";
 import {useSelector, useDispatch} from "react-redux";
 import {setPassword} from "../store/modules/loginStore";
-import {modifyPwd} from "../api/modifyPwd";
+import {modifyPwd} from "../api/modifyUser";
 const ModifyPassword = () => {
   const oldpwd = useSelector((state) => state.login.password);
   const dispatch = useDispatch();
