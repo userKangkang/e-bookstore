@@ -21,11 +21,12 @@ const BeforeUpload = (file) => {
 
 const Profile = () => {
 
-  const user = useSelector((state) => state.login.username);
-  const avatar = useSelector((state) => state.login.avatar);
-  const id = useSelector((state) => state.login.id);
-  const hobby = useSelector((state) => state.login.hobby);
-  const signature = useSelector((state) => state.login.signature);
+  const user = localStorage.getItem("username");
+  const id = localStorage.getItem("id");
+  const avatar = localStorage.getItem("avatar");
+  const hobby = localStorage.getItem("hobby");
+  const signature = localStorage.getItem("signature");
+  
 
   const onFinish = (values) => {
     console.log(values);

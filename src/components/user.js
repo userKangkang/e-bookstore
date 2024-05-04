@@ -3,15 +3,22 @@ import {DownOutlined, UserOutlined, LogoutOutlined} from "@ant-design/icons";
 import { Avatar, Dropdown, message, Space, Tooltip } from 'antd';
 import {Link} from 'react-router-dom';
 import ModifyPassword from "./modifypassword";
-import {useSelector, useDispatch} from "react-redux";
-import {setLogout} from "../store/modules/loginStore";
-import {Logout} from "../api/getlogin";
+import {useState, useEffect} from "react";
+import {UserContext} from "../App";
+import {useContext} from "react";
 
 const User = () => {
-  const user = useSelector((state) => state.login.username);
-  const balance = useSelector((state) => state.login.balance);
-  const dispatch = useDispatch();
-  const avatar = useSelector((state) => state.login.avatar);
+  const [user, setUser] = useState(localStorage.getItem("username"));
+  const [balance, setBalance] = useState(localStorage.getItem("balance"));
+  const [avatar, setAvatar] = useState(localStorage.getItem("avatar"));
+
+  const {userChange, setUserChange} = useContext(UserContext);
+
+  useEffect(() => {
+    setUser(localStorage.getItem("username"));
+    setBalance(localStorage.getItem("balance"));
+    setAvatar(localStorage.getItem("avatar"));
+  },[userChange]);
 
   const items = [
     {
@@ -40,10 +47,9 @@ const User = () => {
         <Link
           to="/"
           onClick={() => {
-            dispatch(setLogout());
             message.success("退出登录成功");
-            Logout();
             localStorage.clear();
+            setUserChange(!userChange);
           }}
         >
           退出登录

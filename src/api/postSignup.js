@@ -1,12 +1,8 @@
 import axios from "axios";
 import { LOCALURL } from "./common";
 
-export const postSignup = async (username, password, email) => {
-    const response = await axios.post(`${LOCALURL}/user/signup`, {
-        username: username,
-        password: password,
-        email: email
-    });
+export const postSignup = async (user) => {
+    const response = await axios.post(`${LOCALURL}/user/signup`, user);
 
     console.log(response.data);
 };

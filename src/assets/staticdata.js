@@ -49,4 +49,35 @@ const staticBooks = [
   }
 ];
 
-export default staticBooks;
+const Managedata = [
+  {
+    key: "1",
+    bookname: "第七天",
+    author: "余华",
+    isbn: "9787544291220",
+    stock: 100
+  },
+  {
+    key: "2",
+    bookname: "俄语入门",
+    author: "Putin",
+    isbn: "9787544291220",
+    stock: 100
+  },
+  {
+    key: "3",
+    bookname: "C++ Primer Plus",
+    author: "Stanley B. Lippman",
+    isbn: "9787544291220",
+    stock: 100
+  },
+  {
+    key: "4",
+    bookname: "道德经",
+    author: "老子",
+    isbn: "9787544291220",
+    stock: 100
+  }
+];
+
+export {staticBooks, Managedata};

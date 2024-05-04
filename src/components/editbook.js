@@ -1,6 +1,7 @@
 import React, {useState} from "react";
+import UpdateBookModal from "../components/modals/updateBookModal";
 import {Button, Modal} from "antd";
-const EditBook = () => {
+const EditBook = ({book}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -16,11 +17,7 @@ const EditBook = () => {
       <a href="#" onClick={showModal}>
         编辑
       </a>
-      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-      </Modal>
+      <UpdateBookModal visible={isModalOpen} setVisible={setIsModalOpen} book={book}/>
     </>
   );
 };

@@ -4,10 +4,11 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {setId, setIslogin, setPassword, setUsername} from "../store/modules/loginStore";
 import {getLogin} from "../api/getlogin";
-import {getMe} from "../api/getMe";
+
+import { set } from "lodash";
 
 export default function Login({children}) {
-  const dispatch = useDispatch();
+  
 
   const navigate = useNavigate();
   return (
@@ -33,10 +34,9 @@ export default function Login({children}) {
               .then((res) => {
                 if (res.code) {
                   message.success("登录成功");
-                  dispatch(setIslogin(true));
-                  dispatch(setUsername(values.username));
-                  dispatch(setPassword(values.password));
                   localStorage.setItem("username", values.username);
+                  localStorage.setItem("id", res.data.id);
+                  
                   navigate("/book");
                 } else {
                   message.error("登录失败");
@@ -48,7 +48,6 @@ export default function Login({children}) {
           }}
           onFinishFailed={() => {
             alert("onFinishFailed");
-            dispatch(setIslogin(false));
           }}
           autoComplete="off"
         >

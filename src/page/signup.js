@@ -10,27 +10,44 @@ const {TextArea} = Input;
 
 const onFinish = (values) => {
   console.log("Success:", values);
-  postSignup(values.username, values.password, values.email);
+  postSignup(values);
   message.success("注册成功");
 };
 const onFinishFailed = (errorInfo) => {
   console.log("Failed:", errorInfo);
 };
 
+const BeforeUpload = (file) => {
+  console.log("beforeUpload");
+  console.log(file);
+  const isImg = file.type === "image/jpeg" || file.type === "image/png" || file.type === "image/jpg";
+  if(!isImg) {
+    message.error("请上传图片文件");
+  }
+  return isImg;
+}
+
 const Signup = () => {
   /* Signup form */
   const [newAvatar, setNewAvatar] = useState("");
 
   const [form] = Form.useForm();
-  const [fileList, setFileList] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const onChange = async (value) => {
-    setFileList(value.fileList);
-    if(value.fileList.length > 0) {
-      const file = value.fileList[0].originFileObj;
-      const res = await uploadImg(file);
-      setNewAvatar(res.data.data);
-      form.setFieldValue("avatar",res.data.data);
+  const onChange = (info) => {
+    console.log(info);
+    if(info.file.status === "uploading") {
+      setLoading(true);
+      return;
+    }
+    if(info.file.status === "done") {
+      setLoading(false);
+      message.success("上传成功");
+      setNewAvatar(info.file.response.data);
+      form.setFieldsValue({avatar: info.file.response.data});
+    }
+    if(info.file.status === "error") {
+      message.error("上传失败");
     }
   }
   
@@ -96,7 +113,7 @@ const Signup = () => {
               <label className={style.label}>用户头像</label>
               <Flex vertical className={style.input} align="center">
                 <Image src={newAvatar} width={"255px"} style={{marginBottom: "20px"}} />
-                <Upload name="avatar" action="" onChange={onChange}>
+                <Upload name="avatar" action="http://localhost:8080/upload/avatar" onChange={onChange} beforeUpload={BeforeUpload}>
                   <Button icon={<UploadOutlined />}>Click to Upload</Button>
                 </Upload>
               </Flex>
@@ -137,7 +154,7 @@ const Signup = () => {
         </Flex>
         <Flex>
           <Button style={{marginLeft: "auto", marginRight: "auto", borderRadius: "8px"}} type="primary" htmlType="submit">
-            保存更改
+            确认注册
           </Button>
         </Flex>
       </Card>

@@ -1,9 +1,10 @@
-
-import { request } from "../utils/request";
+import axios from "axios";
+import {LOCALURL} from "./common";
 
 export const getBookDetail = async (bookId) => {
-  return request({
-    url: `/getbook/${bookId}`,
-    method: "GET"
-  });
+  const response = await axios.get( `${LOCALURL}/getbook/${bookId}`);
+
+  console.log(response.data);
+
+  return response.data;
 };
