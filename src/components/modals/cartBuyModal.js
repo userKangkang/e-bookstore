@@ -1,11 +1,38 @@
-import React from "react";
-import {Divider, Input, Modal, message, Form, Flex, InputNumber} from "antd";
+import React, {useState} from "react";
+import {Divider, Input, Modal, message, Form, Flex, InputNumber, Table, Button} from "antd";
 import { addOrder } from "../../api/orderRelated";
 import style from "../../css/modal.module.css";
+import { forEach } from "lodash";
 
 const {TextArea} = Input;
 
-const BuyModal = ({visible, setVisible, book}) => {
+const CartBuyModal = ({books, removeCart, text}) => {
+
+    const [visible, setVisible] = useState(false);
+
+    const columns = [
+        {
+          title: "图片",
+          dataIndex: "path",
+          key: "path",
+          render: (path) => <img src={path} className="w-20" />
+        },
+        {
+          title: "书名",
+          dataIndex: "name",
+          key: "name"
+        },
+        {
+          title: "价格",
+          dataIndex: "prices",
+          key: "prices"
+        },
+        {
+          title: "数量",
+          key: "number",
+          render: (data) => <InputNumber min={1} max={10} defaultValue={data.number} onChange={(value) => {}} />
+        },
+      ];
 
     const [form] = Form.useForm();
 
@@ -20,16 +47,26 @@ const BuyModal = ({visible, setVisible, book}) => {
 
     const onFinish = (values) => {
         const uid = localStorage.getItem("id");
-        const prices = book.price * values.number;
+        let money = 0;
+        forEach(books, (book) => {
+            money += book.prices;
+        })
         const order = {
-            orderBooks: [
-                {...book, number: values.number, prices: prices}
-            ],
+            orderBooks: 
+                books.map((book) => {
+                    return {
+                        ...book,
+                        number: book.number,
+                        prices: book.prices
+                    }
+                })
+            ,
             address: values.address,
-            money: prices,
+            money: money,
             time: new Date(),
             uid: uid,
         }
+        console.log(order);
         addOrder(order).then((res) => {
             if(res.code){
                 message.success("购买成功");
@@ -39,9 +76,12 @@ const BuyModal = ({visible, setVisible, book}) => {
         }).catch((e) => {
             message.error("网络错误");
         })
+        removeCart();
     }
 
     return (
+        <div>
+        <Button onClick={()=>{setVisible(true)}} type="primary">{text}</Button>
         <Modal title={"确认订单"} open={visible} onCancel={onCancel} onOk={onOk}>
         <Divider/>
         <Form style={{
@@ -59,31 +99,7 @@ const BuyModal = ({visible, setVisible, book}) => {
                     width: "100%"
                 }}
             >
-                    <Flex className={style.formitem}>
-                        <label className={style.label}>书名</label>
-                        <div >{book.name}</div>
-                    </Flex>
-
-                    <Flex className={style.formitem}>
-                        <label className={style.label}>作者</label>
-                        <div >{book.author}</div>
-                    </Flex>
-
-                    <Flex className={style.formitem}>
-                        <label className={style.label}>单价</label>
-                        <div >{book.price}</div>
-                    </Flex>
-
-
-                
-                    
-                    <Form.Item className={style.formitem}  name="number">
-                    <Flex vertical style={{ width: "40%" }} >
-                        <label className={style.label}>数量</label>
-                        <InputNumber className={style.input} placeholder="数量" min={1} max={10}
-                        onChange={(value)=>{form.setFieldsValue({number: value})}}/>
-                        </Flex>
-                    </Form.Item>
+                <Table columns={columns} dataSource={books} />
                 
                 <Form.Item
                     className={style.formitem}
@@ -102,7 +118,8 @@ const BuyModal = ({visible, setVisible, book}) => {
             </Flex>
         </Form>
         </Modal>
+        </div>
     )
 }
 
-export default BuyModal;
+export default CartBuyModal;

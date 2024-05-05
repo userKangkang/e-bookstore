@@ -24,3 +24,11 @@ export const removeCart = async (cartId) => {
     
     return response.data;
 }
+
+export const removeAllCart = async (userId) => {
+    const response = await axios.delete(`${LOCALURL}/cart/remove/all/${userId}`);
+    
+    console.log(response.data);
+    
+    return response.data;
+}

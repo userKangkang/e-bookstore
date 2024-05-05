@@ -85,20 +85,6 @@ const CartModal = ({visible, setVisible, book}) => {
                         </Flex>
                     </Form.Item>
                 
-                <Form.Item
-                    className={style.formitem}
-                    name="address"
-                    rules={[
-                        {
-                            required: true,
-                            message: "请输入你的收件地址！"
-                        }
-                    ]}>
-                    <Flex vertical style={{ width: "100%" }}>
-                        <label className={style.label}>收件地址</label>
-                        <TextArea className={style.input} placeholder="收件地址" rows={5}/>
-                    </Flex>
-                </Form.Item>
             </Flex>
         </Form>
         </Modal>

@@ -1,8 +1,10 @@
 import React from "react";
 import {Space, Table, Input, InputNumber, Button, message} from "antd";
 import {useState, useEffect} from "react";
-import {getCarts, removeCart} from "../api/CartRelated";
-import { addOrder } from "../api/orderRelated";
+import {getCarts, removeCart, removeAllCart} from "../api/CartRelated";
+import CartBuyModal from "../components/modals/cartBuyModal";
+import { set } from "lodash";
+
 
 const {Search} = Input;
 
@@ -10,6 +12,7 @@ const Cart = () => {
   const [cart, setCart] = useState([]);
   const [isRender, setIsRender] = useState(false);
   const id = localStorage.getItem("id");
+
 
   useEffect(() => {
     console.log(id);
@@ -23,7 +26,6 @@ const Cart = () => {
           name: cart.book.name,
           prices: cart.prices,
           number: cart.number,
-          time: cart.time,
           address: cart.address
         };
       });
@@ -55,37 +57,25 @@ const Cart = () => {
       render: (data) => <InputNumber min={1} max={10} defaultValue={data.number} onChange={(value) => {}} />
     },
     {
-      title: "收货地址",
-      key: "address",
-      dataIndex: "address",
-      render: (address) => <div>{address}</div>
-    },
-    {
       title: "操作",
       key: "action",
       render: (data) => {
         return (
           <Space size="middle">
-            <a
-              onClick={() => {
-                const order = {
-                  ...data,
-                  uid: localStorage.getItem("id"),
-                };
-                console.log(order);
-                addOrder(order).then((res) => {
-                  if (res.code) {
-                    message.success("购买成功");
-                    setIsRender(!isRender);
-                  } else {
-                    message.error("购买失败");
-                  }
-                })
-                removeCart(data.key);
-              }}
-            >
-              购买
-            </a>
+            <CartBuyModal books={[
+              {
+                book_id: data.book_id,
+                path: data.path,
+                name: data.name,
+                prices: data.prices,
+                number: data.number
+              }
+            ]} text="直接购买"
+             removeCart={()=>{
+              removeCart(data.key).then((res)=>{
+                setIsRender(!isRender);
+              }).catch((e)=>{message.error("网络错误")})
+            }}/>
             <a
             onClick={()=>{
               removeCart(data.key).then((res)=>{
@@ -108,7 +98,8 @@ const Cart = () => {
     <div className="w-[95%] p-[20px] self-start h-full">
       <Search placeholder="input search text" allowClear enterButton="Search" size="large" className=" w-[95%] mb-[20px] bg-green-400" />
       <Table columns={columns} dataSource={cart} />
-      <Button className="mt-4 bg-green-500 text-white rounded-lg">全部购买</Button>
+      <CartBuyModal books={cart} text="全部购买"
+             removeCart={()=>{removeAllCart(id);setIsRender(!isRender)}}/>
     </div>
   );
 };

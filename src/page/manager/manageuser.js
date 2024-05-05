@@ -13,7 +13,14 @@ const columns = [
   },
   {
     title: "状态",
-    dataIndex: "state"
+    dataIndex: "state",
+    render: (state) => {
+      if(state == 1) {
+        return "正常";
+      } else {
+        return "封禁";
+      }
+    }
   },
   {
     title: "操作",
