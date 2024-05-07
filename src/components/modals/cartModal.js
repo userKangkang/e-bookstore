@@ -7,6 +7,8 @@ const {TextArea} = Input;
 
 const CartModal = ({visible, setVisible, book}) => {
 
+    const id = localStorage.getItem("id");
+
     const [form] = Form.useForm();
 
     const onOk = () => {
@@ -30,11 +32,11 @@ const CartModal = ({visible, setVisible, book}) => {
             uid: uid
         }
         console.log(cart);
-        addCart(cart).then((res) => {
+        addCart(Number(id), cart).then((res) => {
             if(res.code){
                 message.success("添加成功");
             }else{
-                message.error("添加失败");
+                message.error(res.message);
             }
         }).catch((e) => {
             message.error("网络错误");

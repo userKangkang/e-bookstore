@@ -64,3 +64,11 @@ export const deleteBook = async (id) => {
 
     return response.data;
 }
+
+export const getBookRank = async (data) => {
+    const response = await axios.get(`${LOCALURL}/manager/rank/book/${data[0]}/${data[1]}`);
+    
+    console.log(response.data);    
+
+    return response.data;
+}

@@ -9,8 +9,8 @@ export const getCarts = async (userId) => {
     return response.data;
 }
 
-export const addCart = async (cart) => {
-    const response = await axios.post(`${LOCALURL}/cart/add`, cart);
+export const addCart = async (uid, cart) => {
+    const response = await axios.post(`${LOCALURL}/cart/add/${uid}`, cart);
     
     console.log(response.data);
     

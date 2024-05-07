@@ -1,6 +1,6 @@
 import React from "react";
 
-import {UserOutlined, BookOutlined, MoneyCollectOutlined} from "@ant-design/icons";
+import {UserOutlined, BookOutlined, MoneyCollectOutlined, AreaChartOutlined} from "@ant-design/icons";
 
 import {Menu} from "antd";
 import {Link, Outlet, useSearchParams} from "react-router-dom";
@@ -23,7 +23,11 @@ const items = [
     label: <Link to="/manager/orders">订单</Link>,
     key: "orders",
     icon: <MoneyCollectOutlined />
-  
+  },
+  {
+    label: <Link to="/manager/count">统计</Link>,
+    key: "count",
+    icon: <AreaChartOutlined />
   }
 ];
 const ManagerLayout = () => {
