@@ -3,7 +3,7 @@ import {Col, Divider, Row} from "antd";
 import Book from "../../components/book";
 import {Input, Pagination, Menu} from "antd";
 import {Link, useNavigate, useSearchParams} from "react-router-dom";
-import { getBookList } from "../../api/ManagerRelated";
+import { getBookList, getSearchBookList } from "../../api/ManagerRelated";
 import {useState, useEffect} from "react";
 
 const {Search} = Input;
@@ -11,6 +11,8 @@ const {Search} = Input;
 const Shopping = () => {
   // 编程导航
   const [bookList, setBookList] = useState([]);
+  const [isRender, setIsRender] = useState(false);
+  const [search, setSearch] = useState(null);
 
   const [pagination, setPagination] = useState({
     current: 1,
@@ -25,22 +27,26 @@ const Shopping = () => {
             setBookList(res.data);
         })
     }
-    getBooks();
-  });
+    const getSearchedBooks = async () => {
+      getSearchBookList(search).then((res) => {
+        console.log(res.data);
+        setBookList(res.data);
+      });
+    }
+    if(search === "" || search === null){
+      getBooks();
+    } else {
+      getSearchedBooks(search);
+    }
+  },[isRender]);
 
 
   const navigate = useNavigate();
-  const [params] = useSearchParams();
-  const bookname = params.get("search");
-  console.log(bookname);
-  const [search, setSearch] = useState(null);
-  const searchedBooks = bookList.filter((book) => {
-    if (bookname === null) {
-      return true;
-    }
-    return book.name.includes(bookname);
-  });
-  const slicedBooks = searchedBooks.slice((pagination.current - 1) * pagination.pageSize, pagination.current * pagination.pageSize);
+
+
+
+
+  const slicedBooks = bookList.slice((pagination.current - 1) * pagination.pageSize, pagination.current * pagination.pageSize);
   const Books = slicedBooks.map((book) => {
     return (
       <Col className="gutter-row" onClick={() => navigate(`/bookdetail/${book.id}`)} span={6}>
@@ -62,13 +68,17 @@ const Shopping = () => {
           allowClear
           enterButton="Search"
           size="large"
-          onInput={(e) => {
+          onChange={(e) => {
             setSearch(e.target.value);
           }}
           onSearch={() => {
-            if (search !== null) {
+            if (search !== null && search !== "") {
               navigate(`/book/shopping?search=${search}`);
+              
+            } else {
+              navigate("/book/shopping");
             }
+            setIsRender(!isRender);
           }}
           className=" w-[95%] mb-[20px] bg-green-400"
         />
@@ -76,7 +86,7 @@ const Shopping = () => {
         <Row gutter={[40, 40]} wrap={true} className="w-full justify-start items-start h-[900px]">
           {Books}
         </Row>
-        <Pagination pageSize={pagination.pageSize} total={searchedBooks.length} current={pagination.current}
+        <Pagination pageSize={pagination.pageSize} total={bookList.length} current={pagination.current}
          onChange={handleChange} className=" mt-8 mb-8" />
       </div>
     </div>

@@ -17,7 +17,7 @@ const BeforeUpload = (file) => {
   return isImg;
 };
 
-const UpdateBookModal = ({visible, setVisible, book}) => {
+const UpdateBookModal = ({visible, setVisible, book, setRender, render}) => {
   /* Signup form */
   const [newPicture, setNewPicture] = useState(book.path);
   const [loading, setLoading] = useState(false);
@@ -36,10 +36,16 @@ const UpdateBookModal = ({visible, setVisible, book}) => {
   const onFinish = (values) => {
     console.log("Success:", values);
     updateBook({
-        ...values,
-        id: book.id,
+      ...values,
+      id: book.id
+    }).then((res) => {
+      if (res.code) {
+        message.success("修改成功");
+        setRender(!render);
+      } else {
+        message.error("修改失败");
+      }
     });
-    message.success("添加成功");
   };
 
   const onChange = (info) => {
@@ -62,41 +68,27 @@ const UpdateBookModal = ({visible, setVisible, book}) => {
   return (
     <Modal width={"780px"} title={"添加新书"} open={visible} onCancel={onCancel} onOk={onOk}>
       <Form encType="multipart/form-data" layout="vertical" size="large" onFinish={onFinish} className={style.main} form={form}>
-        <Flex
-          justify="space-between"
-          style={{
-            marginBottom: "20px"
-          }}
-        >
-          <Flex className={style.formitem}>
-            <label
-              style={{
-                width: "100px",
-                textAlign: "left",
-                fontWeight: "bold",
-                paddingLeft: "10px",
-                fontSize: "15px"
-              }}
-            >
-              书名
-            </label>
-            <div>{book.name}</div>
+        <Flex justify="space-between">
+          <Flex vertical style={{width: "50%"}}>
+            <Form.Item className={style.formitem} name="name" initialValue={book.name}>
+              <Flex vertical style={{width: "300px"}}>
+                <label className={style.label}>书名</label>
+                <Input className={style.input} placeholder="书名" defaultValue={book.name} />
+              </Flex>
+            </Form.Item>
           </Flex>
-
-          <Flex className={style.formitem} style={{width: "50%"}}>
-            <label style={{
-                width: "100px",
-                textAlign: "left",
-                fontWeight: "bold",
-                paddingLeft: "10px",
-                fontSize: "15px"
-              }}>作者</label>
-            <div>{book.author}</div>
+          <Flex vertical style={{width: "50%"}}>
+            <Form.Item className={style.formitem} name="author" initialValue={book.author}>
+              <Flex vertical style={{width: "300px"}}>
+                <label className={style.label}>作者</label>
+                <Input className={style.input} placeholder="作者" defaultValue={book.author} />
+              </Flex>
+            </Form.Item>
           </Flex>
         </Flex>
         <Flex justify="space-between">
           <Form.Item className={style.formitem} name="path" valuePropName="fileList" initialValue={book.path}>
-            <Flex vertical style={{width: "300px",marginTop: "10px"}}>
+            <Flex vertical style={{width: "300px", marginTop: "10px"}}>
               <label className={style.label}>书籍封面</label>
               <Flex vertical className={style.input} align="center">
                 <Image src={newPicture} width={"255px"} style={{marginBottom: "20px"}} />
@@ -107,7 +99,7 @@ const UpdateBookModal = ({visible, setVisible, book}) => {
             </Flex>
           </Form.Item>
           <Flex vertical style={{width: "50%"}}>
-          <Form.Item className={style.formitem} name="price" initialValue={book.price}>
+            <Form.Item className={style.formitem} name="price" initialValue={book.price}>
               <Flex vertical style={{width: "300px"}}>
                 <label className={style.label}>价格</label>
                 <Input className={style.input} placeholder="价格" defaultValue={book.price} />

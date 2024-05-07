@@ -32,3 +32,22 @@ export const removeAllCart = async (userId) => {
     
     return response.data;
 }
+
+export const updateSingleCartNumber = async (cartId, number) => {
+    const response = await axios.put(`${LOCALURL}/cart/update/single/number`, {
+        id: cartId,
+        number: number
+    });
+    
+    console.log(response.data);
+    
+    return response.data;
+}
+
+export const updateAllCartNumber = async (data) => {
+    const response = await axios.put(`${LOCALURL}/cart/update/all/number`, data);
+    
+    console.log(response.data);
+    
+    return response.data;
+}

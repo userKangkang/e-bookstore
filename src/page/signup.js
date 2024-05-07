@@ -8,10 +8,15 @@ import style from "../css/signup.module.css";
 
 const {TextArea} = Input;
 
-const onFinish = (values) => {
-  console.log("Success:", values);
-  postSignup(values);
-  message.success("注册成功");
+const onFinish = async (values) => {
+  await postSignup({...values, state : 1}).then((res) => {
+    console.log(res);
+    if(res.code == 1) {
+      message.success("注册成功");
+    } else {
+      message.error(res.message);
+    }
+  });
 };
 const onFinishFailed = (errorInfo) => {
   console.log("Failed:", errorInfo);
@@ -103,6 +108,7 @@ const Signup = () => {
               <Input className={style.input} type="password" placeholder="密码"/>
             </Flex>
           </Form.Item>
+          
         </Flex>
         <Flex justify="space-between">
           <Form.Item className={style.formitem}
@@ -120,6 +126,28 @@ const Signup = () => {
             </Flex>
           </Form.Item>
           <Flex vertical style={{width: "45%"}}>
+          <Form.Item className={style.formitem} style={{width: "350px"}}
+            name="comfirm"
+            rules={[
+              {
+                required: true,
+                message: "Please input your password!"
+              },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue('password') === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error('The new password that you entered do not match!'));
+                },
+              }),
+            ]}
+          >
+            <Flex vertical style={{width: "300px"}}>
+              <label className={style.label}>确认密码</label>
+              <Input className={style.input} type="password" placeholder="密码"/>
+            </Flex>
+          </Form.Item>
           <Form.Item className={style.formitem}
             name="email"
             rules={

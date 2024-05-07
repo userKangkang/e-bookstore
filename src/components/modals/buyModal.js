@@ -34,7 +34,7 @@ const BuyModal = ({visible, setVisible, book}) => {
             if(res.code){
                 message.success("购买成功");
             }else{
-                message.error("购买失败");
+                message.error(res.message);
             }
         }).catch((e) => {
             message.error("网络错误");

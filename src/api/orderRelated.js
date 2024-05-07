@@ -8,3 +8,11 @@ export const addOrder = async (order) => {
     
     return response.data;
 };
+
+export const getOrders = async () => {
+    const response = await axios.get(`${LOCALURL}/manager/order/all`);
+    
+    console.log(response.data);
+    
+    return response.data;
+}

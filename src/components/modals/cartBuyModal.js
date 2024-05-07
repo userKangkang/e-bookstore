@@ -70,18 +70,21 @@ const CartBuyModal = ({books, removeCart, text}) => {
         addOrder(order).then((res) => {
             if(res.code){
                 message.success("购买成功");
+                removeCart();
             }else{
-                message.error("购买失败");
+                message.error(res.message);
             }
         }).catch((e) => {
             message.error("网络错误");
         })
-        removeCart();
+        
     }
 
     return (
         <div>
-        <Button onClick={()=>{setVisible(true)}} type="primary">{text}</Button>
+        <Button onClick={()=>{setVisible(true)}} type="primary" style={{
+            borderRadius: "5px",
+        }} disabled={books.length === 0}>{text}</Button>
         <Modal title={"确认订单"} open={visible} onCancel={onCancel} onOk={onOk}>
         <Divider/>
         <Form style={{

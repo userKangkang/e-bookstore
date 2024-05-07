@@ -9,6 +9,14 @@ export const getBookList = async () => {
     return response.data;
 }
 
+export const getSearchBookList = async (search) => {
+    const response = await axios.get(`${LOCALURL}/manager/book/search/${search}`);
+    
+    console.log(response.data);    
+
+    return response.data;
+}
+
 export const addBook = async (book) => {
     const response = await axios.post(`${LOCALURL}/manager/book/add`, book);
     
@@ -27,6 +35,30 @@ export const updateBook = async (book) => {
 
 export const getUserList = async () => {
     const response = await axios.get(`${LOCALURL}/manager/user/get`);
+    
+    console.log(response.data);    
+
+    return response.data;
+}
+
+export const disableUser = async (id) => {
+    const response = await axios.put(`${LOCALURL}/manager/user/disable/${id}`);
+    
+    console.log(response.data);    
+
+    return response.data;
+}
+
+export const enableUser = async (id) => {
+    const response = await axios.put(`${LOCALURL}/manager/user/enable/${id}`);
+    
+    console.log(response.data);    
+
+    return response.data;
+}
+
+export const deleteBook = async (id) => {
+    const response = await axios.delete(`${LOCALURL}/manager/book/delete/${id}`);
     
     console.log(response.data);    
 

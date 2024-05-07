@@ -27,11 +27,13 @@ const Home = () => {
       if (!res.data) {
         navigate("/");
       } else {
+        console.log(res.data);
         localStorage.setItem("id", res.data.id);
         localStorage.setItem("balance", res.data.balance);
         localStorage.setItem("avatar", res.data.avatar);
         localStorage.setItem("hobby", res.data.hobby);
         localStorage.setItem("signature", res.data.signature);
+        localStorage.setItem("identity", res.data.identity);
         setUserChange(!userChange);
       }
     });
@@ -45,22 +47,14 @@ const Home = () => {
     getBooks();
   }, [user]);
   const navigate = useNavigate();
-  const [params] = useSearchParams();
-  const bookname = params.get("search");
-  console.log(bookname);
-  const [search, setSearch] = useState(null);
-  const searchedBooks = bookList.filter((book) => {
-    if (bookname === null) {
-      return true;
-    }
-    return book.name.includes(bookname);
-  });
+
+
   const string = ["新书上架", "热销图书"];
   const Bokks1 = [0, 4].map((index) => (
     <div className="w-full ml-[20px] mb-[20px]">
       <h2 className="text-2xl font-bold mt-[15px] mb-[5px]">{string[index / 4]}</h2>
       <Row gutter={[40, 40]} wrap={true} className="w-full justify-start items-start">
-        {searchedBooks.slice(index, index < 6 ? 4 + index : 6).map((book) => {
+        {bookList.slice(index, index < 6 ? 4 + index : 6).map((book) => {
           return (
             <Col className="gutter-row" onClick={() => navigate(`/bookdetail/${book.id}`)} span={6}>
               <Book path={book.path} name={book.name} price={book.price} author={book.author} stock={book.stock} />
@@ -73,21 +67,6 @@ const Home = () => {
 
   return (
     <div className=" flex flex-col w-[88%] items-center pt-12">
-      <Search
-        placeholder="input search text"
-        allowClear
-        enterButton="Search"
-        size="large"
-        onInput={(e) => {
-          setSearch(e.target.value);
-        }}
-        onSearch={() => {
-          if (search !== null) {
-            navigate(`/book/shopping?search=${search}`);
-          }
-        }}
-        className=" w-[95%] mb-[20px] bg-green-400"
-      />
       <img src={process.env.PUBLIC_URL + "/img/homepage.jpg"} className=" w-[95%] mt-[20px] mb-[30px]" />
       <Divider className=" w-[95%]" />
       {Bokks1}

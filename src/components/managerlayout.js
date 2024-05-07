@@ -1,6 +1,6 @@
 import React from "react";
 
-import {UserOutlined, BookOutlined} from "@ant-design/icons";
+import {UserOutlined, BookOutlined, MoneyCollectOutlined} from "@ant-design/icons";
 
 import {Menu} from "antd";
 import {Link, Outlet, useSearchParams} from "react-router-dom";
@@ -18,6 +18,12 @@ const items = [
     label: <Link to="/manager/books">书籍</Link>,
     key: "books",
     icon: <BookOutlined />
+  },
+  {
+    label: <Link to="/manager/orders">订单</Link>,
+    key: "orders",
+    icon: <MoneyCollectOutlined />
+  
   }
 ];
 const ManagerLayout = () => {
@@ -25,7 +31,7 @@ const ManagerLayout = () => {
   const [current, setCurrent] = useState("/manager");
   const onClick = (e) => {
     console.log("click ", e);
-    setCurrent(e.key === "user" ? "user" : "books");
+    setCurrent(e.key);
   };
   return (
     <div className=" w-11/12 flex self-start">

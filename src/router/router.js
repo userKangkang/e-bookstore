@@ -15,6 +15,7 @@ import {createBrowserRouter} from "react-router-dom";
 import {Provider} from "react-redux";
 import ManagerLayout from "../components/managerlayout";
 import store from "../store";
+import ManagerOrder from "../page/manager/managerorder";
 
 const router = createBrowserRouter([
   {
@@ -43,7 +44,8 @@ const router = createBrowserRouter([
         element: <ManagerLayout />,
         children: [
           {index: true, element: <ManageUser />},
-          {path: "books", element: <ManageBook />}
+          {path: "books", element: <ManageBook />},
+          {path: "orders", element: <ManagerOrder />},
         ]
       },
       {path: "profile", element: <Profile />}

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {ConfigProvider, Layout, Menu, theme} from "antd";
 import {Link, Outlet} from 'react-router-dom';
+import {UserContext} from "../App";
 import User from './user';
 
 const {Header, Content, Footer} = Layout;
@@ -18,19 +19,26 @@ const items = [
     label: <Link to="/order">订单</Link>
   },
   {
-    key: "signup",
-    label: <Link to="/signup">注册</Link>
-  },
-  {
-    key: "manager",
-    label: <Link to="/manager">管理员专区</Link>
-  },
-  {
     key: "profile",
     label: <Link to="/profile">个人中心</Link>
   }
 ];
 export default function BasicLayout() {
+
+  const {userChange, setUserChange} = useContext(UserContext);
+
+  const [loginedItems, setLoginedItems] = useState(items);
+
+  useEffect(() => {
+    setLoginedItems((localStorage.getItem("identity") === "1") ? [
+      ...items, {
+        key: "manager",
+        label: <Link to="/manager">管理员专区</Link>
+      },
+    ] : items);
+  }, [userChange]);
+
+  
   const {
     token: {colorBgContainer, borderRadius, colorPrimary}
   } = theme.useToken();
@@ -60,7 +68,7 @@ export default function BasicLayout() {
           <Menu
             mode="horizontal"
             defaultSelectedKeys={["shopping"]}
-            items={items}
+            items={loginedItems}
             style={{
               background: colorBgContainer,
               flex: 1,

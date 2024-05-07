@@ -1,63 +1,10 @@
 import React, {useState, useEffect} from "react";
-import {Input, Table} from "antd";
+import {Button, Input, Table, message} from "antd";
 import { getUserList } from "../../api/ManagerRelated";
+import { disableUser, enableUser } from "../../api/ManagerRelated";
 const {Search} = Input;
 
-const columns = [
-  {
-    title: "用户名",
-    dataIndex: "username",
-    render: (text) => {
-      return text;
-    }
-  },
-  {
-    title: "状态",
-    dataIndex: "state",
-    render: (state) => {
-      if(state == 1) {
-        return "正常";
-      } else {
-        return "封禁";
-      }
-    }
-  },
-  {
-    title: "操作",
-    dataIndex: "operation",
-    render: () => {
-      return (
-        <div>
-          <a href="#">解禁</a>
-          &nbsp;
-          <a href="#">封禁</a>
-        </div>
-      );
-    }
-  }
-];
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    state: "正常"
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    state: "正常"
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    state: "正常"
-  },
-  {
-    key: "4",
-    name: "Disabled User",
-    state: "管理员"
-  }
-];
+
 
 // rowSelection object indicates the need for row selection
 const rowSelection = {
@@ -73,6 +20,53 @@ const rowSelection = {
 const ManageUser = () => {
   const [userList, setUserList] = useState([]);
 
+  const [render, setRender] = useState(false);
+
+  const columns = [
+    {
+      title: "用户名",
+      dataIndex: "username",
+      render: (text) => {
+        return text;
+      }
+    },
+    {
+      title: "状态",
+      dataIndex: "state",
+      render: (state) => {
+        if(state == 1) {
+          return "正常";
+        } else {
+          return "封禁";
+        }
+      }
+    },
+    {
+      title: "身份",
+      dataIndex: "identity",
+      render: (identity) => {
+        if(identity == 0) {
+          return "用户";
+        } else {
+          return "管理员";
+        }
+      }
+    },
+    {
+      title: "操作",
+      render: (data) => {
+        return (
+          <div>
+            {data.state == 1 ? (
+              <Button type="primary" onClick={() => {disableUser(data.id); message.success("封禁成功"); setRender(!render)}} disabled={data.identity == 1}>封禁</Button>
+            ): <Button type="primary" onClick={() => {enableUser(data.id); message.success("解禁成功"); setRender(!render)}}>解封</Button>}
+          </div>
+        );
+      }
+    }
+  ];
+
+
   useEffect(() => {
     const fetchData = async () => {
       const response = await getUserList();
@@ -80,7 +74,7 @@ const ManageUser = () => {
       console.log(response.data);
     };
     fetchData();
-  }, [])
+  }, [render])
 
   return (
     <div className=" w-[100%] flex justify-center">

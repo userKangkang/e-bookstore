@@ -18,7 +18,7 @@ const BeforeUpload = (file) => {
   return isImg;
 }
 
-const AddBookModal = ({visible, setVisible}) => {
+const AddBookModal = ({visible, setVisible, setRender, render}) => {
   /* Signup form */
   const [newPicture, setNewPicture] = useState("");
   const [loading, setLoading] = useState(false);
@@ -36,9 +36,14 @@ const AddBookModal = ({visible, setVisible}) => {
 
     const onFinish = (values) => {
         console.log("Success:", values);
-        addBook(values);
-        message.success("添加成功");
-
+        addBook(values).then((res) => {
+            if(res.code) {
+                message.success("添加成功");
+                setRender(!render);
+            } else {
+                message.error("添加失败");
+            }
+        });
     }
 
   const onChange = (info) => {
