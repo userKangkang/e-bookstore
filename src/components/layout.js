@@ -20,7 +20,7 @@ const items = [
   },
   {
     key: "profile",
-    label: <Link to="/profile">个人中心</Link>
+    label: <Link to="/user">个人中心</Link>
   }
 ];
 export default function BasicLayout() {

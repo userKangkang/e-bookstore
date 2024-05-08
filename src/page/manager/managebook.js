@@ -14,7 +14,6 @@ const {Search} = Input;
 // rowSelection object indicates the need for row selection
 const rowSelection = {
   onChange: (selectedRowKeys, selectedRows) => {
-    console.log(`selectedRowKeys: ${selectedRowKeys}`, "selectedRows: ", selectedRows);
   },
   getCheckboxProps: (record) => ({
     disabled: record.name === "Disabled User",
@@ -86,12 +85,12 @@ const ManageBook = () => {
   useEffect(() => {
     const getSearchedBook = async () => {
       const res = await getSearchBookList(search);
-      console.log(res);
+
       setManagedata(res.data);
     }
     const getBook = async () => {
       const res = await getBookList();
-      console.log(res);
+
       setManagedata(res.data);
     }
     if(search === "" || search === null){

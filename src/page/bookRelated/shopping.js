@@ -23,13 +23,11 @@ const Shopping = () => {
   useEffect(() => {
     const getBooks = async () => {
       getBookList().then((res) => {
-        console.log(res.data);
         setBookList(res.data);
       });
     };
     const getSearchedBooks = async () => {
       getSearchBookList(search).then((res) => {
-        console.log(res.data);
         setBookList(res.data);
       });
     };
@@ -51,10 +49,9 @@ const Shopping = () => {
     );
   });
   const handleChange = (page) => {
-    console.log(page);
     // 在表格翻页时，更新当前页码
     setPagination({...pagination, current: page});
-    console.log(pagination);
+
   };
   return (
     <div className=" w-11/12 flex">

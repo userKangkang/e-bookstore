@@ -9,7 +9,7 @@ const {Search} = Input;
 // rowSelection object indicates the need for row selection
 const rowSelection = {
   onChange: (selectedRowKeys, selectedRows) => {
-    console.log(`selectedRowKeys: ${selectedRowKeys}`, "selectedRows: ", selectedRows);
+
   },
   getCheckboxProps: (record) => ({
     disabled: record.name === "Disabled User",
@@ -71,7 +71,7 @@ const ManageUser = () => {
     const fetchData = async () => {
       const response = await getUserList();
       setUserList(response.data);
-      console.log(response.data);
+
     };
     fetchData();
   }, [render])

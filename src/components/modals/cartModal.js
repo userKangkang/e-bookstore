@@ -22,7 +22,6 @@ const CartModal = ({visible, setVisible, book}) => {
 
     const onFinish = (values) => {
         const uid = localStorage.getItem("id");
-        console.log(uid);
         const prices = book.price * values.number;
         const cart = {
             ...book,
@@ -31,7 +30,6 @@ const CartModal = ({visible, setVisible, book}) => {
             time: new Date(),
             uid: uid
         }
-        console.log(cart);
         addCart(Number(id), cart).then((res) => {
             if(res.code){
                 message.success("添加成功");

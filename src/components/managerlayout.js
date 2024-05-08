@@ -25,16 +25,25 @@ const items = [
     icon: <MoneyCollectOutlined />
   },
   {
-    label: <Link to="/manager/count">统计</Link>,
+    label: "统计",
     key: "count",
-    icon: <AreaChartOutlined />
+    icon: <AreaChartOutlined />,
+    children: [
+      {
+        label: <Link to="/manager/count">销售统计</Link>,
+        key: "count"
+      },
+      {
+        label: <Link to="/manager/consume">消费统计</Link>,
+        key: "consume"
+      }
+    ]
   }
 ];
 const ManagerLayout = () => {
   // 编程导航
   const [current, setCurrent] = useState("/manager");
   const onClick = (e) => {
-    console.log("click ", e);
     setCurrent(e.key);
   };
   return (

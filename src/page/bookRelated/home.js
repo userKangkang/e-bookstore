@@ -20,14 +20,13 @@ const Home = () => {
   const {userChange, setUserChange} = useContext(UserContext);
 
   const user = localStorage.getItem("username");
-  console.log(user);
+
 
   useEffect(() => {
     getMe(user).then((res) => {
       if (!res.data) {
         navigate("/");
       } else {
-        console.log(res.data);
         localStorage.setItem("id", res.data.id);
         localStorage.setItem("balance", res.data.balance);
         localStorage.setItem("avatar", res.data.avatar);
@@ -40,7 +39,6 @@ const Home = () => {
 
     const getBooks = async () => {
       getBookList().then((res) => {
-        console.log(res.data);
         setBookList(res.data);
       });
     };

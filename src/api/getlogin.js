@@ -8,7 +8,6 @@ export const getLogin = async (username, password) => {
     password: password
   });
 
-  console.log(response.data);
 
   return response.data;
 };
@@ -16,7 +15,6 @@ export const getLogin = async (username, password) => {
 export const Logout = async () => {
   const response = await axios.put(`${PREFIX}/logout`);
 
-  console.log(response.data);
 
   return response.data;
 };

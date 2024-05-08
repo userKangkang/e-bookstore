@@ -134,7 +134,7 @@ const ManagerOrder = () => {
             style={{marginLeft: "5px"}}
             onClick={() => {
               setIsRender(!isRender);
-              console.log(isRender);
+
             }}
           >
             确定

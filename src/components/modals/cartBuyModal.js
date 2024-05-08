@@ -66,7 +66,6 @@ const CartBuyModal = ({books, removeCart, text}) => {
             time: new Date(),
             uid: uid,
         }
-        console.log(order);
         addOrder(order).then((res) => {
             if(res.code){
                 message.success("购买成功");

@@ -9,8 +9,6 @@ const {TextArea} = Input;
 
 
 const BeforeUpload = (file) => {
-  console.log("beforeUpload");
-  console.log(file);
   const isImg = file.type === "image/jpeg" || file.type === "image/png" || file.type === "image/jpg";
   if(!isImg) {
     message.error("请上传图片文件");
@@ -35,7 +33,6 @@ const AddBookModal = ({visible, setVisible, setRender, render}) => {
     }
 
     const onFinish = (values) => {
-        console.log("Success:", values);
         addBook(values).then((res) => {
             if(res.code) {
                 message.success("添加成功");
@@ -47,7 +44,6 @@ const AddBookModal = ({visible, setVisible, setRender, render}) => {
     }
 
   const onChange = (info) => {
-    console.log(info);
     if(info.file.status === "uploading") {
       setLoading(true);
       return;

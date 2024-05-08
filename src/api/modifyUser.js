@@ -7,7 +7,7 @@ export const modifyPwd = async (password) => {
     password: password
   });
 
-  console.log(response.data);
+  
 
   return response.data;
 };
@@ -21,7 +21,7 @@ export const modifyProfile = async (id, username, hobby, avatar, signature) => {
     signature: signature
   });
 
-  console.log(response.data);
+  
 
   return response.data;
 }

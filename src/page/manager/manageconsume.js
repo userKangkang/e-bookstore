@@ -2,48 +2,46 @@ import React from "react";
 import {Space, Table, Flex, DatePicker, Button, Image, message, Input} from "antd";
 
 import {useState, useEffect} from "react";
-import {getBookRank} from "../../api/ManagerRelated";
+import {getUserRank} from "../../api/ManagerRelated";
 
 const {Search} = Input;
 
 const columns = [
   {
-    title: "排名",
-    dataIndex: "rank",
-    rowScope: "row",
+    title: "购买金额排名",
+    dataIndex: "moneyRank",
+    rowScope: "row"
   },
   {
-    title: "书名",
-    key: "name",
-    dataIndex: "name",
-    render: (name) => <div>{name}</div>
+    title: "购买数量排名",
+    dataIndex: "numberRank",
+    rowScope: "row"
   },
   {
-    title: "销量",
-    key: "totalNumber",
-    dataIndex: "totalNumber",
-    render: (totalNumber) => <div>{totalNumber}</div>
+    title: "用户名",
+    key: "username",
+    dataIndex: "username",
+    render: (username) => <div>{username}</div>
   },
   {
-    title: "封面",
-    dataIndex: "avatar",
-    key: "avatar",
-    render: (avatar) => <Image src={avatar} width="50px" height="50px" />
+    title: "累计购买金额",
+    key: "money",
+    dataIndex: "money",
+    render: (money) => <div>{money}</div>,
+    sorter: (a, b) => a.money - b.money,
+    sortDirections: ["descend", "ascend"]
   },
-
   {
-    title: "作者",
-    key: "author",
-    dataIndex: "author",
-    render: (author) => (
-      <Space size="middle">
-        <div>{author}</div>
-      </Space>
-    )
+    title: "累计购买数量",
+    dataIndex: "bookNumber",
+    key: "bookNumber",
+    render: (number) => <div>{number}</div>,
+    sorter: (a, b) => a.bookNumber - b.bookNumber,
+    sortDirections: ["descend", "ascend"]
   }
 ];
 
-const ManageCount = () => {
+const ManageConsume = () => {
   const id = localStorage.getItem("id");
   const [ranks, setRanks] = useState([]);
   const [isRender, setIsRender] = useState(false);
@@ -52,7 +50,7 @@ const ManageCount = () => {
   useEffect(() => {
 
     if (date[0] && date[1])
-      getBookRank(date).then((res) => {
+      getUserRank(date).then((res) => {
         setRanks(res.data);
       });
   }, [isRender]);
@@ -62,7 +60,7 @@ const ManageCount = () => {
       <h1>榜单管理</h1>
       <Flex style={{width: "100%"}}>
         <Flex style={{marginBottom: "20px"}} align="center">
-          <div>根据日期获取热销榜：</div>
+          <div>根据日期获取消费榜：</div>
           <DatePicker.RangePicker
             placeholder={["", "Till Now"]}
             allowEmpty={[false, true]}
@@ -82,8 +80,14 @@ const ManageCount = () => {
         </Flex>
       </Flex>
 
-      <Table columns={columns} dataSource={ranks} />
+      <Table
+        columns={columns}
+        dataSource={ranks}
+        showSorterTooltip={{
+          target: "sorter-icon"
+        }}
+      />
     </div>
   );
 };
-export default ManageCount;
+export default ManageConsume;

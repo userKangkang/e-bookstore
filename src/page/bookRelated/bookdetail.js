@@ -37,7 +37,7 @@ const BookDetail = () => {
       const response = await getBookDetail(id);
       setBook(response.data);
       setIsReady(true);
-      console.log(book);
+
     };
     fetchData();
   }, [id]);

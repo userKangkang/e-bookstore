@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from 'antd';
 import styles from "../css/card.module.css";
 
-console.log(styles);
+
 
 const {Meta} = Card;
 const Book = (props) => (

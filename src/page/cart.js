@@ -13,7 +13,6 @@ const Cart = () => {
   const id = localStorage.getItem("id");
 
   useEffect(() => {
-    console.log(id);
     const getCart = async () => {
       const response = await getCarts(id);
       const carts = response.data.map((cart) => {
@@ -143,7 +142,6 @@ const Cart = () => {
               }}
               type="primary"
               onClick={() => {
-                console.log(data.number);
                 updateSingleCartNumber(data.key, data.number).then(
                   (res) => {
                     if (res.code) {

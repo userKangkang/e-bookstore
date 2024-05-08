@@ -10,8 +10,6 @@ import { modifyProfile } from "../api/modifyUser";
 const {TextArea} = Input;
 
 const BeforeUpload = (file) => {
-  console.log("beforeUpload");
-  console.log(file);
   const isImg = file.type === "image/jpeg" || file.type === "image/png" || file.type === "image/jpg";
   if(!isImg) {
     message.error("请上传图片文件");
@@ -29,7 +27,7 @@ const Profile = () => {
   
 
   const onFinish = (values) => {
-    console.log(values);
+
     modifyProfile(id, values.username, values.hobby, values.avatar || avatar, values.signature);
     message.success("保存成功");
   }
@@ -40,7 +38,7 @@ const Profile = () => {
   const [form] = Form.useForm();
 
   const onChange = (info) => {
-    console.log(info);
+
     if(info.file.status === "uploading") {
       setLoading(true);
       return;
@@ -57,7 +55,8 @@ const Profile = () => {
   }
   
   return (
-    <Form encType="multipart/form-data" layout="vertical" size="middle" onFinish={onFinish} className={style.main} form={form}>
+    <Form encType="multipart/form-data" layout="vertical" size="middle" onFinish={onFinish} className={style.main} form={form}
+    style={{marginLeft: "90px"}}>
       <Card
         title={
           <label style={{fontSize: 18}} className={{width: "100%"}}>

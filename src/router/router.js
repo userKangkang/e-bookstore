@@ -17,6 +17,9 @@ import ManagerLayout from "../components/managerlayout";
 import store from "../store";
 import ManagerOrder from "../page/manager/managerorder";
 import ManageCount from "../page/manager/managecount";
+import ManageConsume from "../page/manager/manageconsume";
+import UserLayout from "../components/userlayout";
+import UserStat from "../page/userStat";
 
 const router = createBrowserRouter([
   {
@@ -48,9 +51,17 @@ const router = createBrowserRouter([
           {path: "books", element: <ManageBook />},
           {path: "orders", element: <ManagerOrder />},
           {path: "count", element: <ManageCount/>},
+          {path: "consume", element: <ManageConsume />}
         ]
       },
-      {path: "profile", element: <Profile />}
+      {
+        path: "user",
+        element: <UserLayout />,
+        children: [
+          {index: true, element: <Profile />},
+          {path: "stat", element: <UserStat />}
+        ]
+      }
     ]
   },
   {

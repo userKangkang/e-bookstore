@@ -16,7 +16,6 @@ const ModifyPassword = () => {
   };
   const handleOk = () => {
     if (oldPassword !== oldpwd) {
-      console.log(oldPassword, oldpwd);
       alert("原密码错误");
       return;
     }
@@ -32,7 +31,6 @@ const ModifyPassword = () => {
     setConfirmLoading(false);
   };
   const handleCancel = () => {
-    console.log("Clicked cancel button");
     setOpen(false);
   };
   return (

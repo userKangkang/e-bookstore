@@ -10,7 +10,6 @@ const {TextArea} = Input;
 
 const onFinish = async (values) => {
   await postSignup({...values, state : 1}).then((res) => {
-    console.log(res);
     if(res.code == 1) {
       message.success("注册成功");
     } else {
@@ -19,12 +18,10 @@ const onFinish = async (values) => {
   });
 };
 const onFinishFailed = (errorInfo) => {
-  console.log("Failed:", errorInfo);
 };
 
 const BeforeUpload = (file) => {
-  console.log("beforeUpload");
-  console.log(file);
+
   const isImg = file.type === "image/jpeg" || file.type === "image/png" || file.type === "image/jpg";
   if(!isImg) {
     message.error("请上传图片文件");
@@ -40,7 +37,6 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
 
   const onChange = (info) => {
-    console.log(info);
     if(info.file.status === "uploading") {
       setLoading(true);
       return;
