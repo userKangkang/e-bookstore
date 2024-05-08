@@ -1,11 +1,21 @@
-import logo from './logo.svg';
-import { DatePicker } from 'antd';
+import React from 'react';
 import './App.css';
+import router from "./router/router";
+import {RouterProvider} from "react-router-dom";
+import {useState, useContext} from "react";
 
-function App() {
+const UserContext = React.createContext();
+
+const App = () => {
+  const [userChange, setUserChange] = useState(0);
+ 
+
   return (
-    <DatePicker />
+    <UserContext.Provider value={{userChange, setUserChange}}>
+      <RouterProvider router={router} />
+    </UserContext.Provider>
   );
-}
+};
 
 export default App;
+export {UserContext};
