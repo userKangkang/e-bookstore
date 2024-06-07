@@ -20,13 +20,11 @@ const BuyModal = ({visible, setVisible, book}) => {
 
     const onFinish = (values) => {
         const uid = localStorage.getItem("id");
-        const prices = book.price * values.number;
         const order = {
             orderBooks: [
-                {...book, number: values.number, prices: prices}
+                {...book, number: values.number, prices: book.price}
             ],
             address: values.address,
-            money: prices,
             time: new Date(),
             uid: uid,
         }
@@ -71,7 +69,7 @@ const BuyModal = ({visible, setVisible, book}) => {
 
                     <Flex className={style.formitem}>
                         <label className={style.label}>单价</label>
-                        <div >{book.price}</div>
+                        <div >{book.price / 100}</div>
                     </Flex>
 
 

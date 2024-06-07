@@ -2,7 +2,7 @@ import React from "react";
 import {Space, Table, Flex, DatePicker, Button, Image, message, Input} from "antd";
 
 import {useState, useEffect} from "react";
-import { getUserStat } from "../api/getUserRelated";
+import { getUserStat } from "../api/UserRelated";
 
 const {Search} = Input;
 
@@ -23,7 +23,7 @@ const columns = [
     title: "总金额",
     key: "money",
     dataIndex: "money",
-    render: (money) => <div>{money}</div>
+    render: (money) => <div>{money / 100}</div>
   },
   {
     title: "封面",
@@ -45,7 +45,7 @@ const columns = [
 ];
 
 const UserStat = () => {
-  const id = localStorage.getItem("id");
+  const id = sessionStorage.getItem("id");
   const [stats, setStats] = useState([]);
   const [isRender, setIsRender] = useState(false);
   const [date, setDate] = useState([null, null]);
@@ -62,7 +62,7 @@ const UserStat = () => {
     if (date[0] && date[1])
       getUserStat(Number(id), date).then((res) => {
         setStats(res.data);
-        setSum(sumFunc(res.data.map((item) => item.money)));
+        setSum(sumFunc(res.data.map((item) => item.money / 100)));
         setTotal(sumFunc(res.data.map((item) => item.number)));
       });
   }, [isRender]);

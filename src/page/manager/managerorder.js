@@ -1,6 +1,6 @@
 import React from "react";
 import {Space, Table, Flex, DatePicker, Button, Image, message, Input} from "antd";
-
+import { useNavigate } from "react-router-dom";
 import {useState, useEffect} from "react";
 import {getOrders, getAllOrdersByTime, getOrdersByName} from "../../api/orderRelated";
 import {set} from "lodash";
@@ -45,7 +45,10 @@ const columns = [
 ];
 
 const ManagerOrder = () => {
-  const id = localStorage.getItem("id");
+
+  const navigate = useNavigate();
+
+  const id = sessionStorage.getItem("id");
   const [orders, setOrders] = useState([]);
   const [isRender, setIsRender] = useState(false);
   const [date, setDate] = useState([null, null]);
@@ -53,27 +56,42 @@ const ManagerOrder = () => {
 
   useEffect(() => {
     const getOrder = async () => {
-      const response = await getOrders(Number(id));
-      const orders = response.data.map((order) => {
-        return {
-          key: order.orderId,
-          money: order.money,
-          time: order.time,
-          address: order.address,
-          orderBooks: order.orderBooks,
-          user: order.user.username
-        };
-      });
-      setOrders(orders);
+      getOrders(Number(id)).then(
+        (res) => {
+          if (res.code === 1) {
+            message.success("获取订单成功");
+            const orders = res.data.map((order) => {
+              return {
+                key: order.orderId,
+                money: order.money / 100,
+                time: order.time,
+                address: order.address,
+                orderBooks: order.orderBooks,
+                user: order.user.username
+              };
+            });
+            setOrders(orders);
+          } else {
+            message.error("获取订单失败");
+          }
+        }, (e) => {
+          if(e.response.status === 401){
+            message.error("请先登录");
+            navigate("/");
+          } else {
+            message.error("网络错误");
+          }
+        }
+      );
     };
     const getOrderByDate = async () => {
-      const response = await getAllOrdersByTime(date).then((res) => {
+      getAllOrdersByTime(date).then((res) => {
         if (res.code === 1) {
           message.success("根据时间筛选成功");
           const orders = res.data.map((order) => {
             return {
               key: order.orderId,
-              money: order.money,
+              money: order.money / 100,
               time: order.time,
               address: order.address,
               orderBooks: order.orderBooks,
@@ -84,16 +102,23 @@ const ManagerOrder = () => {
         } else {
           message.error("根据时间筛选失败");
         }
-      });
+      }, (err) => {
+        if(err.response.status === 401){
+          message.error("请先登录");
+          navigate("/");
+        } else {
+          message.error("网络错误");
+        }
+    });
     };
     const getOrderBySearch = async () => {
-      const response = await getOrdersByName(search).then((res) => {
+      getOrdersByName(search).then((res) => {
         if (res.code === 1) {
           message.success("根据书名筛选成功");
           const orders = res.data.map((order) => {
             return {
               key: order.orderId,
-              money: order.money,
+              money: order.money / 100,
               time: order.time,
               address: order.address,
               orderBooks: order.orderBooks,
@@ -102,11 +127,16 @@ const ManagerOrder = () => {
           });
           setOrders(orders);
         } else {
-
           message.error("根据书名筛选失败");
         }
-      });
-    };
+      }, (err) => {
+        if(err.response.status === 401){
+          message.error("请先登录");
+          navigate("/");
+        } else {
+          message.error("网络错误");
+        }
+    })};
     if (search !== "") {
       getOrderBySearch();
     } else if (date[0] === null || date[1] === null) {
@@ -170,9 +200,9 @@ const ManagerOrder = () => {
                 key: orderbook.book_id,
                 name: orderbook.book.name,
                 count: orderbook.number,
-                price: orderbook.prices,
+                price: orderbook.prices / 100,
                 path: orderbook.book.path,
-                singlePrice: orderbook.book.price
+                singlePrice: orderbook.book.price / 100
               };
             });
             return <Table columns={columns} dataSource={data} pagination={false} />;

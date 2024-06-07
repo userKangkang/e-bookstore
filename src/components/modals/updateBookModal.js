@@ -96,10 +96,10 @@ const UpdateBookModal = ({visible, setVisible, book, setRender, render}) => {
             </Flex>
           </Form.Item>
           <Flex vertical style={{width: "50%"}}>
-            <Form.Item className={style.formitem} name="price" initialValue={book.price}>
+            <Form.Item className={style.formitem} name="price" initialValue={book.price / 100}>
               <Flex vertical style={{width: "300px"}}>
                 <label className={style.label}>价格</label>
-                <Input className={style.input} placeholder="价格" defaultValue={book.price} />
+                <Input className={style.input} placeholder="价格" defaultValue={book.price / 100} />
               </Flex>
             </Form.Item>
             <Form.Item className={style.formitem} name="stock" initialValue={book.stock}>

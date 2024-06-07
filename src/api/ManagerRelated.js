@@ -1,8 +1,8 @@
-import axios from "axios";
+import { request } from "../utils/token";
 import {LOCALURL} from "./common";
 
 export const getBookList = async () => {
-    const response = await axios.get(`${LOCALURL}/manager/book/get`);
+    const response = await request.get(`${LOCALURL}/manager/book/get`);
     
         
 
@@ -10,7 +10,7 @@ export const getBookList = async () => {
 }
 
 export const getSearchBookList = async (search) => {
-    const response = await axios.get(`${LOCALURL}/manager/book/search/${search}`);
+    const response = await request.get(`${LOCALURL}/manager/book/search/${search}`);
     
         
 
@@ -18,7 +18,7 @@ export const getSearchBookList = async (search) => {
 }
 
 export const addBook = async (book) => {
-    const response = await axios.post(`${LOCALURL}/manager/book/add`, book);
+    const response = await request.post(`${LOCALURL}/manager/book/add`, book);
     
         
 
@@ -26,7 +26,7 @@ export const addBook = async (book) => {
 }
 
 export const updateBook = async (book) => {
-    const response = await axios.put(`${LOCALURL}/manager/book/update`, book);
+    const response = await request.put(`${LOCALURL}/manager/book/update`, book);
     
         
 
@@ -34,7 +34,7 @@ export const updateBook = async (book) => {
 }
 
 export const getUserList = async () => {
-    const response = await axios.get(`${LOCALURL}/manager/user/get`);
+    const response = await request.get(`${LOCALURL}/manager/user/get`);
     
         
 
@@ -42,7 +42,7 @@ export const getUserList = async () => {
 }
 
 export const disableUser = async (id) => {
-    const response = await axios.put(`${LOCALURL}/manager/user/disable/${id}`);
+    const response = await request.put(`${LOCALURL}/manager/user/disable/${id}`);
     
         
 
@@ -50,7 +50,7 @@ export const disableUser = async (id) => {
 }
 
 export const enableUser = async (id) => {
-    const response = await axios.put(`${LOCALURL}/manager/user/enable/${id}`);
+    const response = await request.put(`${LOCALURL}/manager/user/enable/${id}`);
     
         
 
@@ -58,7 +58,7 @@ export const enableUser = async (id) => {
 }
 
 export const deleteBook = async (id) => {
-    const response = await axios.delete(`${LOCALURL}/manager/book/delete/${id}`);
+    const response = await request.delete(`${LOCALURL}/manager/book/delete/${id}`);
     
         
 
@@ -66,7 +66,7 @@ export const deleteBook = async (id) => {
 }
 
 export const getBookRank = async (data) => {
-    const response = await axios.get(`${LOCALURL}/manager/rank/book/${data[0]}/${data[1]}`);
+    const response = await request.get(`${LOCALURL}/manager/rank/book/${data[0]}/${data[1]}`);
     
         
 
@@ -74,7 +74,7 @@ export const getBookRank = async (data) => {
 }
 
 export const getUserRank = async (data) => {
-    const response = await axios.get(`${LOCALURL}/manager/rank/user/${data[0]}/${data[1]}`);
+    const response = await request.get(`${LOCALURL}/manager/rank/user/${data[0]}/${data[1]}`);
     
         
 

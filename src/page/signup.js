@@ -1,6 +1,6 @@
 import React from "react";
 import {Button, Flex, Card, Image, Upload, Form, Input, message} from "antd";
-import {postSignup} from "../api/postSignup";
+import {postSignup} from "../api/UserRelated";
 import {UploadOutlined} from "@ant-design/icons";
 import {useState} from "react";
 import { uploadImg } from "../api/uploadImg";

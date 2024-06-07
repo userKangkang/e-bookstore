@@ -12,40 +12,37 @@ import ManageBook from "../page/manager/managebook";
 import Signup from "../page/signup";
 import Profile from "../page/profile";
 import {createBrowserRouter} from "react-router-dom";
-import {Provider} from "react-redux";
 import ManagerLayout from "../components/managerlayout";
-import store from "../store";
 import ManagerOrder from "../page/manager/managerorder";
 import ManageCount from "../page/manager/managecount";
 import ManageConsume from "../page/manager/manageconsume";
 import UserLayout from "../components/userlayout";
 import UserStat from "../page/userStat";
+import AuthRoute from "../components/AuthRoute";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <Provider store={store}>
-        <BasicLayout />
-      </Provider>
+      <BasicLayout />
     ),
     children: [
       {index: true, element: <Login />},
       {
         path: "book",
-        element: <BookLayout />,
+        element: <AuthRoute><BookLayout /></AuthRoute>,
         children: [
           {index: true, element: <Home />},
           {path: "shopping", element: <Shopping />}
         ]
       },
-      {path: "cart", element: <Cart />},
-      {path: "bookdetail/:id", element: <BookDetail />},
-      {path: "order", element: <Order />},
+      {path: "cart", element: <AuthRoute><Cart /></AuthRoute>},
+      {path: "bookdetail/:id", element: <AuthRoute><BookDetail /></AuthRoute>},
+      {path: "order", element: <AuthRoute><Order /></AuthRoute>},
       {path: "signup", element: <Signup />},
       {
         path: "manager",
-        element: <ManagerLayout />,
+        element: <AuthRoute><ManagerLayout /></AuthRoute>,
         children: [
           {index: true, element: <ManageUser />},
           {path: "books", element: <ManageBook />},
@@ -56,7 +53,7 @@ const router = createBrowserRouter([
       },
       {
         path: "user",
-        element: <UserLayout />,
+        element: <AuthRoute><UserLayout /></AuthRoute>,
         children: [
           {index: true, element: <Profile />},
           {path: "stat", element: <UserStat />}

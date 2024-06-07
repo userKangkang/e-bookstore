@@ -1,10 +1,12 @@
 import React from "react";
 import {Col, Divider, Row} from "antd";
 import Book from "../../components/book";
-import {Input, Pagination, Menu} from "antd";
+import {Input, Pagination, message} from "antd";
 import {Link, useNavigate, useSearchParams} from "react-router-dom";
 import {getBookList, getSearchBookList} from "../../api/ManagerRelated";
 import {useState, useEffect} from "react";
+import { getBooksByPagination, getBookNumber } from "../../api/BookRelated";
+import { set } from "lodash";
 
 const {Search} = Input;
 
@@ -13,6 +15,7 @@ const Shopping = () => {
   const [bookList, setBookList] = useState([]);
   const [isRender, setIsRender] = useState(false);
   const [search, setSearch] = useState(null);
+  const [bookNumber, setBookNumber] = useState(0);
 
   const [pagination, setPagination] = useState({
     current: 1,
@@ -22,17 +25,43 @@ const Shopping = () => {
 
   useEffect(() => {
     const getBooks = async () => {
-      getBookList().then((res) => {
-        setBookList(res.data);
-      });
+      getBooksByPagination(pagination.current - 1, pagination.pageSize).then((res) => {
+        if(res.code === 1) {
+          setBookList(res.data);
+        }
+      }, (e) => {
+        if(e.response.status === 401) {
+          message.error("请先登录");
+          navigate("/");
+        } else {
+          message.error("网络错误");
+        }
+    });
     };
     const getSearchedBooks = async () => {
       getSearchBookList(search).then((res) => {
-        setBookList(res.data);
+        setBookList(res.data);      
+      }, (e) => {
+        if(e.response.status === 401) {
+          message.error("请先登录");
+          navigate("/");
+        } else {
+          message.error("网络错误");
+        }
       });
     };
     if (search === "" || search === null) {
       getBooks();
+      getBookNumber().then((res) => {
+        setBookNumber(res.data);
+      }, (e) => {
+        if(e.response.status === 401) {
+          message.error("请先登录");
+          navigate("/");
+        } else {
+          message.error("网络错误");
+        }
+      });
     } else {
       getSearchedBooks(search);
     }
@@ -40,18 +69,17 @@ const Shopping = () => {
 
   const navigate = useNavigate();
 
-  const slicedBooks = bookList.slice((pagination.current - 1) * pagination.pageSize, pagination.current * pagination.pageSize);
-  const Books = slicedBooks.map((book) => {
+  const Books = bookList.map((book) => {
     return (
       <Col className="gutter-row" onClick={() => navigate(`/bookdetail/${book.id}`)} span={6}>
-        <Book path={book.path} name={book.name} price={book.price} author={book.author} stock={book.stock} />
+        <Book path={book.path} name={book.name} price={book.price / 100} author={book.author} stock={book.stock} />
       </Col>
     );
   });
   const handleChange = (page) => {
     // 在表格翻页时，更新当前页码
     setPagination({...pagination, current: page});
-
+    setIsRender(!isRender);
   };
   return (
     <div className=" w-11/12 flex">
@@ -78,7 +106,7 @@ const Shopping = () => {
         <Row gutter={[40, 40]} wrap={true} className="w-full justify-start items-start h-[900px]">
           {Books}
         </Row>
-        <Pagination pageSize={pagination.pageSize} total={bookList.length} current={pagination.current} onChange={handleChange} className=" mt-8 mb-8" />
+        <Pagination pageSize={pagination.pageSize} total={bookNumber} current={pagination.current} onChange={handleChange} className=" mt-8 mb-8" />
       </div>
     </div>
   );

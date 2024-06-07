@@ -1,6 +1,6 @@
 import React from "react";
 import {Space, Table, Flex, DatePicker, Button, Image, message, Input} from "antd";
-
+import { useNavigate } from "react-router-dom";
 import {useState, useEffect} from "react";
 import {getBookRank} from "../../api/ManagerRelated";
 
@@ -44,16 +44,25 @@ const columns = [
 ];
 
 const ManageCount = () => {
-  const id = localStorage.getItem("id");
+  const id = sessionStorage.getItem("id");
   const [ranks, setRanks] = useState([]);
   const [isRender, setIsRender] = useState(false);
   const [date, setDate] = useState([null, null]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
 
     if (date[0] && date[1])
       getBookRank(date).then((res) => {
         setRanks(res.data);
+      }, (e)=> {
+        if(e.response.status === 401) {
+          message.error("请先登录");
+          navigate("/");
+        } else {
+          message.error("网络错误");
+        }
       });
   }, [isRender]);
 

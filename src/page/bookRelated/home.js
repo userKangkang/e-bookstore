@@ -1,13 +1,12 @@
 import React from "react";
-import {Col, Divider, Row} from "antd";
+import {Col, Divider, Row, message} from "antd";
 import {AppstoreOutlined, MailOutlined, SettingOutlined} from "@ant-design/icons";
 import Book from "../../components/book";
 import {Input, Pagination, Menu} from "antd";
-import {Link, useNavigate, useSearchParams} from "react-router-dom";
-import {staticBooks} from "../../assets/staticdata";
+import {useNavigate} from "react-router-dom";
 import {getBookList} from "../../api/ManagerRelated";
 import {useState, useEffect} from "react";
-import {getMe} from "../../api/getUserRelated";
+import {getMe} from "../../api/UserRelated";
 import {useContext} from "react";
 import {UserContext} from "../../App";
 
@@ -19,33 +18,52 @@ const Home = () => {
 
   const {userChange, setUserChange} = useContext(UserContext);
 
-  const user = localStorage.getItem("username");
-
+  const user = sessionStorage.getItem("username");
 
   useEffect(() => {
-    getMe(user).then((res) => {
-      if (!res.data) {
-        navigate("/");
-      } else {
-        localStorage.setItem("id", res.data.id);
-        localStorage.setItem("balance", res.data.balance);
-        localStorage.setItem("avatar", res.data.avatar);
-        localStorage.setItem("hobby", res.data.hobby);
-        localStorage.setItem("signature", res.data.signature);
-        localStorage.setItem("identity", res.data.identity);
-        setUserChange(!userChange);
+    getMe(user).then(
+      (res) => {
+        if (!res.data) {
+          navigate("/");
+        } else {
+          console.log(res.data);
+          sessionStorage.setItem("id", res.data.id);
+          sessionStorage.setItem("balance", res.data.balance);
+          sessionStorage.setItem("avatar", res.data.avatar);
+          sessionStorage.setItem("hobby", res.data.hobby);
+          sessionStorage.setItem("signature", res.data.signature);
+          sessionStorage.setItem("identity", res.data.identity);
+          setUserChange(!userChange);
+        }
+      },
+      (e) => {
+        if (e.response.status === 401) {
+          message.error("请先登录");
+          navigate("/");
+        } else {
+          message.error("网络错误");
+        }
       }
-    });
+    );
 
     const getBooks = async () => {
-      getBookList().then((res) => {
-        setBookList(res.data);
-      });
+      getBookList().then(
+        (res) => {
+          setBookList(res.data);
+        },
+        (e) => {
+          if (e.response.status === 401) {
+            message.error("请先登录");
+            navigate("/");
+          } else {
+            message.error("网络错误");
+          }
+        }
+      );
     };
     getBooks();
   }, [user]);
   const navigate = useNavigate();
-
 
   const string = ["新书上架", "热销图书"];
   const Bokks1 = [0, 4].map((index) => (
@@ -55,7 +73,7 @@ const Home = () => {
         {bookList.slice(index, index < 6 ? 4 + index : 6).map((book) => {
           return (
             <Col className="gutter-row" onClick={() => navigate(`/bookdetail/${book.id}`)} span={6}>
-              <Book path={book.path} name={book.name} price={book.price} author={book.author} stock={book.stock} />
+              <Book path={book.path} name={book.name} price={book.price / 100} author={book.author} stock={book.stock} />
             </Col>
           );
         })}

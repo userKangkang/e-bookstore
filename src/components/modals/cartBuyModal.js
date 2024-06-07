@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Divider, Input, Modal, message, Form, Flex, InputNumber, Table, Button} from "antd";
-import { addOrder } from "../../api/orderRelated";
+import { buyBooksByCart } from "../../api/CartRelated";
 import style from "../../css/modal.module.css";
 import { forEach } from "lodash";
 
@@ -25,7 +25,8 @@ const CartBuyModal = ({books, removeCart, text}) => {
         {
           title: "价格",
           dataIndex: "prices",
-          key: "prices"
+          key: "prices",
+          render: (prices) => <span>{prices / 100}元</span>
         },
         {
           title: "数量",
@@ -46,7 +47,7 @@ const CartBuyModal = ({books, removeCart, text}) => {
     }
 
     const onFinish = (values) => {
-        const uid = localStorage.getItem("id");
+        const uid = sessionStorage.getItem("id");
         let money = 0;
         forEach(books, (book) => {
             money += book.prices;
@@ -66,7 +67,7 @@ const CartBuyModal = ({books, removeCart, text}) => {
             time: new Date(),
             uid: uid,
         }
-        addOrder(order).then((res) => {
+        buyBooksByCart(order).then((res) => {
             if(res.code){
                 message.success("购买成功");
                 removeCart();

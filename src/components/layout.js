@@ -30,7 +30,7 @@ export default function BasicLayout() {
   const [loginedItems, setLoginedItems] = useState(items);
 
   useEffect(() => {
-    setLoginedItems((localStorage.getItem("identity") === "1") ? [
+    setLoginedItems((sessionStorage.getItem("identity") === "1") ? [
       ...items, {
         key: "manager",
         label: <Link to="/manager">管理员专区</Link>

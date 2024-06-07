@@ -27,7 +27,7 @@ const columns = [
     title: "累计购买金额",
     key: "money",
     dataIndex: "money",
-    render: (money) => <div>{money}</div>,
+    render: (money) => <div>{money / 100}</div>,
     sorter: (a, b) => a.money - b.money,
     sortDirections: ["descend", "ascend"]
   },
@@ -42,7 +42,7 @@ const columns = [
 ];
 
 const ManageConsume = () => {
-  const id = localStorage.getItem("id");
+  const id = sessionStorage.getItem("id");
   const [ranks, setRanks] = useState([]);
   const [isRender, setIsRender] = useState(false);
   const [date, setDate] = useState([null, null]);

@@ -1,8 +1,9 @@
 import React from "react";
 import {Flex, Button, Checkbox, Form, Input, message} from "antd";
 import {useNavigate} from "react-router-dom";
-import {getLogin} from "../api/getlogin";
+import {getLogin} from "../api/UserRelated";
 import {Link} from "react-router-dom";
+import { insertToken, setToken,  } from "../utils/token";
 
 import { set } from "lodash";
 
@@ -33,9 +34,10 @@ export default function Login({children}) {
               .then((res) => {
                 if (res.code) {
                   message.success("登录成功");
-                  localStorage.setItem("username", values.username);
-                  localStorage.setItem("id", res.data.id);
+                  sessionStorage.setItem("username", values.username);
+                  setToken(res.data);
                   navigate("/book");
+                  
                 } else {
                   message.error(res.message);
                 }

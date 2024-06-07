@@ -22,11 +22,11 @@ const CartModal = ({visible, setVisible, book}) => {
 
     const onFinish = (values) => {
         const uid = localStorage.getItem("id");
-        const prices = book.price * values.number;
+
         const cart = {
+            prices: book.price,
             ...book,
             ...values,
-            prices: prices,
             time: new Date(),
             uid: uid
         }
@@ -71,12 +71,9 @@ const CartModal = ({visible, setVisible, book}) => {
 
                     <Flex className={style.formitem}>
                         <label className={style.label}>单价</label>
-                        <div >{book.price}</div>
+                        <div >{book.price / 100}</div>
                     </Flex>
 
-
-                
-                    
                     <Form.Item className={style.formitem}  name="number">
                     <Flex vertical style={{ width: "40%" }} >
                         <label className={style.label}>数量</label>
@@ -84,7 +81,6 @@ const CartModal = ({visible, setVisible, book}) => {
                         onChange={(value)=>{form.setFieldsValue({number: value})}}/>
                         </Flex>
                     </Form.Item>
-                
             </Flex>
         </Form>
         </Modal>

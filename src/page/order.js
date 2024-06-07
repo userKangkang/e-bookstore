@@ -1,11 +1,12 @@
-import {useSelector, useDispatch} from "react-redux";
-import {increment, decrement, add} from "../store/modules/counterStore";
+
 import React from "react";
 import {Space, Table, DatePicker, Flex, Button, Image, message, Input} from "antd";
 import {staticBooks} from "../assets/staticdata";
 import {useState, useEffect} from "react";
-import {getOrders} from "../api/getUserRelated";
-import {getOrdersByDate, getOrdersByNameAndUid} from "../api/orderRelated";
+import {useNavigate} from "react-router-dom";
+import {getOrders, getOrderNumberByUid} from "../api/UserRelated";
+import {getOrdersByDate, getOrdersByNameAndUid, getOrderNumberByDate, getOrderNumberByName} from "../api/orderRelated";
+import { get, set } from "lodash";
 
 const {Search} = Input;
 
@@ -41,8 +42,17 @@ const columns = [
 ];
 
 const Order = () => {
-  const id = localStorage.getItem("id");
+
+  const navigate = useNavigate();
+
+  const id = sessionStorage.getItem("id");
   const [orders, setOrders] = useState([]);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 30
+  });
+  const [orderNumber, setOrderNumber] = useState(0);
 
   const [date, setDate] = useState([null, null]);
   const [isRender, setIsRender] = useState(false);
@@ -51,7 +61,7 @@ const Order = () => {
 
   useEffect(() => {
     const getByName = async () => {
-      const response = await getOrdersByNameAndUid(search, Number(id)).then((res) => {
+      const response = await getOrdersByNameAndUid(search, pagination.current - 1, pagination.pageSize).then((res) => {
         if (res.code === 1) {
           message.success("根据书名筛选成功");
           const orders = res.data.map((order) => {
@@ -67,10 +77,18 @@ const Order = () => {
         } else {
           message.error("根据书名筛选失败");
         }
+      }, (e)=>{
+        if(e.response.status === 401) {
+          message.error("请先登录");
+          navigate("/");
+        }
+        else {
+          message.error("网络错误");
+        }
       });
     };
     const getByDate = async () => {
-      const response = await getOrdersByDate(Number(id), date).then((res) => {
+      const response = await getOrdersByDate(date, pagination.current - 1, pagination.pageSize).then((res) => {
         if (res.code === 1) {
           message.success("根据时间筛选成功");
           const orders = res.data.map((order) => {
@@ -86,15 +104,23 @@ const Order = () => {
         } else {
           message.error("根据时间筛选失败");
         }
+      }, (e)=>{
+        if(e.response.status === 401) {
+          message.error("请先登录");
+          navigate("/");
+        }
+        else {
+          message.error("网络错误");
+        }
       });
     };
     const getOrder = async () => {
-      const response = await getOrders(Number(id)).then((res) => {
+      const response = await getOrders(pagination.current - 1, pagination.pageSize).then((res) => {
         if (res.code === 1) {
           const orders = res.data.map((order) => {
             return {
               key: order.orderId,
-              money: order.money,
+              money: order.money / 100,
               time: order.time,
               address: order.address,
               orderBooks: order.orderBooks
@@ -104,14 +130,67 @@ const Order = () => {
         } else {
           message.error("获取订单失败");
         }
+      }, (e)=>{
+        if(e.response.status === 401) {
+          message.error("请先登录");
+          navigate("/");
+        }
+        else {
+          message.error("网络错误");
+        }
       });
     };
     if (search !== "") {
       getByName();
+      getOrderNumberByName(search).then((res) => {
+        setOrderNumber(res.data);
+        setPagination({
+          ...pagination,
+          total: res.data
+        });
+      }, (e)=>{
+        if(e.response.status === 401) {
+          message.error("请先登录");
+          navigate("/");
+        }
+        else {
+          message.error("网络错误");
+        }
+      });
     } else if (date[0] === null || date[1] === null) {
+      getOrderNumberByUid().then((res) => {
+        setOrderNumber(res.data);
+        setPagination({
+          ...pagination,
+          total: res.data
+        })
+      }, (e)=>{
+        if(e.response.status === 401) {
+          message.error("请先登录");
+          navigate("/");
+        }
+        else {
+          message.error("网络错误");
+        }
+      });
       getOrder();
     } else {
       getByDate();
+      getOrderNumberByDate(date).then((res) => {
+        setOrderNumber(res.data);
+        setPagination({
+          ...pagination,
+          total: res.data
+        });
+      }, (e)=>{
+        if(e.response.status === 401) {
+          message.error("请先登录");
+          navigate("/");
+        }
+        else {
+          message.error("网络错误");
+        }
+      });
     }
   }, [isRender]);
 
@@ -152,6 +231,11 @@ const Order = () => {
       <Table
         columns={columns}
         dataSource={orders}
+        onChange={(pagi)=>{setPagination({
+          ...pagi,
+          total: pagination.total
+        }); setIsRender(!isRender);}}
+        pagination={pagination}
         expandable={{
           expandedRowRender: (record) => {
             const columns = [
@@ -166,9 +250,9 @@ const Order = () => {
                 key: orderbook.book_id,
                 name: orderbook.book.name,
                 count: orderbook.number,
-                price: orderbook.prices,
+                price: orderbook.prices / 100,
                 path: orderbook.book.path,
-                singlePrice: orderbook.book.price
+                singlePrice: orderbook.book.price / 100
               };
             });
             return <Table columns={columns} dataSource={data} pagination={false} />;

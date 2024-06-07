@@ -1,14 +1,11 @@
 import fakeComment from "../../assets/fakecomment";
-import {staticBooks} from "../../assets/staticdata";
 import {useParams} from "react-router-dom";
 import React from "react";
 import {useState, useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
 import Comment from "../../components/comment";
-import {Image, Divider, Card, Button, Input, ConfigProvider} from "antd";
-import {addCart} from "../../store/modules/cartStore";
-import {get} from "lodash";
-import {getBookDetail} from "../../api/getBookDetail";
+import {Image, Divider, Card, Button, Input, ConfigProvider, message} from "antd";
+import {useNavigate} from "react-router-dom";
+import {getBookDetail} from "../../api/BookRelated";
 import BuyModal from "../../components/modals/buyModal";
 import CartModal from "../../components/modals/cartModal";
 const {TextArea} = Input;
@@ -20,12 +17,13 @@ const commentCard = (comments) => {
 };
 
 const BookDetail = () => {
-  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
   const [comments, setComments] = useState(fakeComment);
   const [content, setContent] = useState("");
   const {id} = useParams();
-  const user = useSelector((state) => state.login.username);
-  const uid = useSelector((state)=> state.login.id );
+  const uid = sessionStorage.getItem("id");
   const [book, setBook] = useState({});
   const [isReady, setIsReady] = useState(false);
 
@@ -34,10 +32,17 @@ const BookDetail = () => {
   //prepare for backend.
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getBookDetail(id);
-      setBook(response.data);
-      setIsReady(true);
-
+      getBookDetail(id).then((res) => {
+        setBook(res.data);
+        setIsReady(true);
+      }, (e) => {
+        if(e.response.status === 401) {
+          message.error("请先登录");
+          navigate("/");
+        } else {
+          message.error("网络错误");
+        }
+      } );
     };
     fetchData();
   }, [id]);
@@ -55,7 +60,7 @@ const BookDetail = () => {
             <p>{book.detail}</p>
             <Card className="flex-row justify-between align-center w-92/100 rounded-md bg-orange-100">
               <div>抢购价</div>
-              <div className="text-2xl text-orange-500">￥{book.price}</div>
+              <div className="text-2xl text-orange-500">￥{book.price / 100}</div>
             </Card>
             <div className="flex-row justify-start w-9/10 pl-5">
               <ConfigProvider
@@ -100,7 +105,6 @@ const BookDetail = () => {
               <Button
                 className="mr-5 bg-orange-100 text-black rounded-md mt-5 w-28"
                 onClick={() => {
-                  dispatch(addCart({img: book.path, id: book.id, name: book.name, price: book.price, number: 1}));
                   setIsCart(true);
                 }}
               >
@@ -136,7 +140,7 @@ const BookDetail = () => {
             setComments([
               ...comments,
               {
-                uname: user || "匿名用户",
+                uname: sessionStorage.getItem("username") || "匿名用户",
                 text: content,
                 avatar: "https://avatars.githubusercontent.com/u/114564389?v=4"
               }

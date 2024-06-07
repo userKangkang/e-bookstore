@@ -2,6 +2,8 @@ import React, {useState, useEffect} from "react";
 import {Button, Input, Table, message} from "antd";
 import { getUserList } from "../../api/ManagerRelated";
 import { disableUser, enableUser } from "../../api/ManagerRelated";
+import { useNavigate } from "react-router-dom";
+
 const {Search} = Input;
 
 
@@ -18,6 +20,8 @@ const rowSelection = {
   })
 };
 const ManageUser = () => {
+  const navigate = useNavigate();
+
   const [userList, setUserList] = useState([]);
 
   const [render, setRender] = useState(false);
@@ -69,8 +73,19 @@ const ManageUser = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getUserList();
-      setUserList(response.data);
+      getUserList().then(
+        (response) => {
+          console.log(response.data);
+          setUserList(response.data);
+        }, (e)=>{
+          if(e.response.status === 401) {
+            message.error("请先登录");
+            navigate("/");
+          } else {
+            message.error("网络错误");
+          }
+        }
+      );
 
     };
     fetchData();
